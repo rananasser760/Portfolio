@@ -36,6 +36,6 @@ Hi! I'm **Rana Nasser**, a passionate developer and AI enthusiast. I enjoy creat
 
 Check out the live portfolio here: [Portfolio Website](https://sparkling-manatee-cd273e.netlify.app/)
 ---
-Check out the live interactive resume here: [Interactive Resume Website](https://github.com/rananasser760/Portfolio/blob/main/resume.html)
+Check out the live interactive resume here: [Interactive Resume Website](resume.html)
 ---
 
