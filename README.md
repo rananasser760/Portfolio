@@ -34,4 +34,4 @@ Hi! I'm **Rana Nasser**, a passionate developer and AI enthusiast. I enjoy creat
 
 ---
 
-Check out the live portfolio here: [Portfolio Website](https://68c1d4897fd61fdfe736f228--quiet-monstera-fd6497.netlify.app/)
+Check out the live portfolio here: [Portfolio Website](https://sparkling-manatee-cd273e.netlify.app/)
