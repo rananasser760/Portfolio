@@ -28,7 +28,6 @@ Hi! I'm **Rana Nasser**, a passionate developer and AI enthusiast. I enjoy creat
 
 ## 📬 Contact
 - **Email:** [rana.nasser.mohamed@gmail.com](MailTo:rananasser760@gmail.com)  
-- **Phone:** 01225833467  
 - **LinkedIn:** [Connect with me](https://www.linkedin.com/in/rana-nasser-7b2375291/)  
 - **GitHub:** [View my repositories](https://github.com/rananasser760)
 
