@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rana Nasser Mohamed | Interactive Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Clean & Modern -->
+    <!-- Application Structure Plan: The application is structured as an interactive dashboard with four main, non-linear sections: Overview, Skills Deep Dive, Project Portfolio, and Career Timeline. This architecture was chosen over the resume's linear format to empower user-driven exploration. A recruiter, for example, can immediately navigate to the 'Projects' section and filter by a specific technology like 'ETL' without needing to read through the entire document. The interactive nature of each section, such as skill-based filtering and a hover-able timeline, is designed to reveal deeper connections between skills, roles, and projects, providing a more holistic and insightful view of the candidate's capabilities. -->
+    <!-- Visualization & Content Choices: 
+        - Resume Skills List -> Goal: Compare proficiency -> Viz/Presentation Method: Radar Chart -> Interaction: Tooltips on hover -> Justification: Provides an immediate, high-level summary of core competencies. -> Library/Method: Chart.js/Canvas.
+        - Full Skill List -> Goal: Organize & Explore -> Viz/Presentation Method: Interactive Buttons + Dynamic Text Area -> Interaction: Clicking a skill category button filters the displayed skills and highlights related projects. -> Justification: Allows users to drill down into specific areas of expertise and see their practical application. -> Library/Method: Vanilla JS DOM manipulation.
+        - Project List -> Goal: Compare & Organize -> Viz/Presentation Method: Filterable Grid of Project Cards -> Interaction: Users can filter projects by technology or by 'Award Winner' status. -> Justification: Enables targeted discovery of the most relevant work based on user interest. -> Library/Method: Vanilla JS DOM manipulation.
+        - Experience & Education -> Goal: Show Change -> Viz/Presentation Method: Vertical Interactive Timeline -> Interaction: Hovering over timeline events reveals more details. -> Justification: Presents career progression in a more visually engaging and digestible format than a static list. -> Library/Method: HTML/CSS with Tailwind + Vanilla JS.
+        - Key Stats (Awards, Projects) -> Goal: Inform -> Viz/Presentation Method: Large number callouts -> Interaction: Static display -> Justification: Highlights key achievements immediately upon loading the page. -> Library/Method: HTML/CSS with Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F5F7FA;
+            color: #657786;
+        }
+
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #E1E8ED;
+        }
+
+        .nav-active {
+            color: #1a202c;
+            font-weight: 600;
+            border-bottom: 2px solid #657786;
+        }
+
+        .nav-link {
+            color: #AAB8C2;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-link:hover {
+            color: #657786;
+        }
+
+        .skill-btn {
+            background-color: #FFFFFF;
+            border: 1px solid #E1E8ED;
+            color: #657786;
+            transition: all 0.3s ease;
+        }
+
+        .skill-btn.active,
+        .skill-btn:hover {
+            background-color: #657786;
+            color: #FFFFFF;
+            border-color: #657786;
+        }
+
+        .project-tag {
+            background-color: #E1E8ED;
+            color: #657786;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: -21px;
+            width: 10px;
+            height: 10px;
+            background-color: #AAB8C2;
+            border-radius: 50%;
+            border: 2px solid #F5F7FA;
+        }
+
+        .timeline-item:hover::before {
+            background-color: #657786;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <div class="flex flex-col lg:flex-row min-h-screen">
+        <aside
+            class="w-full lg:w-1/4 xl:w-1/5 bg-white border-r border-gray-200 p-6 lg:p-8 flex flex-col fixed bottom-0 lg:sticky lg:top-0 h-auto lg:h-screen z-40">
+            <header class="mb-12 hidden lg:block">
+                <h1 class="text-2xl font-bold text-gray-800">Rana Nasser Mohamed</h1>
+                <p class="text-md text-gray-500">AI & Data Engineering</p>
+            </header>
+            <nav id="main-nav" class="flex lg:flex-col justify-around lg:justify-start lg:space-y-4 text-sm">
+                <a href="#overview" class="nav-link nav-active text-center lg:text-left py-2 px-3">Overview</a>
+                <a href="#skills" class="nav-link text-center lg:text-left py-2 px-3">Skills Deep Dive</a>
+                <a href="#projects" class="nav-link text-center lg:text-left py-2 px-3">Project Portfolio</a>
+                <a href="#timeline" class="nav-link text-center lg:text-left py-2 px-3">Career Timeline</a>
+            </nav>
+            <div class="mt-auto hidden lg:block">
+                <p class="text-xs text-gray-400">&copy; 2025 Rana Nasser Mohamed</p>
+            </div>
+        </aside>
+
+        <main class="w-full lg:w-3/4 xl:w-4/5 p-6 md:p-10 lg:p-12 pb-24 lg:pb-12">
+            <section id="overview" class="min-h-screen">
+                <div class="text-center lg:text-left lg:hidden mb-8">
+                    <h1 class="text-3xl font-bold text-gray-800">Rana Nasser Mohamed</h1>
+                    <p class="text-lg text-gray-500">AI & Data Engineering</p>
+                </div>
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Dashboard Overview</h2>
+                <p class="text-lg text-gray-500 mb-8">A summary of my profile, highlighting key achievements and core
+                    competencies.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="card p-6 rounded-xl shadow-sm text-center">
+                        <span class="text-5xl font-extrabold text-gray-800" id="project-count">0</span>
+                        <p class="text-gray-500 mt-2">Key Projects</p>
+                    </div>
+                    <div class="card p-6 rounded-xl shadow-sm text-center">
+                        <span class="text-5xl font-extrabold text-gray-800" id="award-count">0</span>
+                        <p class="text-gray-500 mt-2">Competitive Awards</p>
+                    </div>
+                    <div class="card p-6 rounded-xl shadow-sm text-center">
+                        <span class="text-5xl font-extrabold text-gray-800" id="experience-years">0+</span>
+                        <p class="text-gray-500 mt-2">Years of Experience</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 xl:grid-cols-5 gap-8">
+                    <div class="xl:col-span-3 card p-6 rounded-xl shadow-sm">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Professional Summary</h3>
+                        <div class="space-y-4 text-gray-600">
+                            <p>Enthusiastic Computer Science student at Ain Shams University with a strong, demonstrated
+                                interest in Artificial Intelligence, Data Engineering, and applied Physics. Seeking to
+                                leverage technical skills in data modeling, machine learning, and ETL pipeline
+                                development to contribute to innovative and impactful projects.</p>
+                            <p>My experience includes internships at the Information Technology Institute (ITI) and
+                                Ejada, where I gained hands-on experience with real-world datasets, enterprise data
+                                integration tools, and applying advanced AI models to solve practical problems. I am
+                                also a passionate educator, having served as an AI and ML instructor for student
+                                organizations.</p>
+                        </div>
+                    </div>
+                    <div class="xl:col-span-2 card p-6 rounded-xl shadow-sm">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Core Competency Areas</h3>
+                        <div class="chart-container">
+                            <canvas id="skillsRadarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="skills" class="min-h-screen pt-20">
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Skills Deep Dive</h2>
+                <p class="text-lg text-gray-500 mb-8">Select a category to explore the specific technologies I work with
+                    and see related projects.</p>
+
+                <div id="skill-buttons" class="flex flex-wrap gap-3 mb-6">
+                </div>
+
+                <div class="card p-6 rounded-xl shadow-sm">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-4" id="skill-category-title"></h3>
+                            <ul id="skill-list" class="space-y-2">
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">Related Projects</h3>
+                            <div id="related-projects" class="space-y-3">
+                                <p class="text-gray-500">Select a skill category to see relevant projects.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="projects" class="min-h-screen pt-20">
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Project Portfolio</h2>
+                <p class="text-lg text-gray-500 mb-8">An interactive showcase of my work. Use the filters to find
+                    projects by technology.</p>
+
+                <div id="project-filters" class="flex flex-wrap gap-3 mb-6">
+                </div>
+
+                <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                </div>
+            </section>
+
+            <section id="timeline" class="min-h-screen pt-20">
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Career Timeline</h2>
+                <p class="text-lg text-gray-500 mb-8">A chronological overview of my professional experience and
+                    academic journey.</p>
+                <div class="w-full max-w-3xl mx-auto">
+                    <div id="career-timeline-container" class="relative border-l-2 border-gray-200 pl-8 space-y-12">
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const portfolioData = {
+                projects: [
+                    { title: "Comprehensive Banking Analytics System", date: "Aug 2025", type: "Internship", award: null, description: "Developed ETL pipelines using Oracle SQL & Informatica PowerCenter to analyze transactions, loans, and foreign transfers across 13 tables. Built complex SQL queries and mappings with Joiner, Aggregator, and Lookup.", technologies: ["Data Engineering", "ETL", "Oracle SQL", "Informatica"] },
+                    { title: "AI-Based EEG Signal Classification", date: "Jun 2025", type: "Competition", award: null, description: "Designed and trained CNN models to classify EEG signals (Motor Imagery and SSVEP). Worked with noisy biosignals and real EEG datasets to develop classification models with 70% accuracy.", technologies: ["AI/ML", "Python", "Deep Learning", "CNN", "BCI"] },
+                    { title: "Guest Satisfaction Prediction", date: "Jun 2025", type: "Project", award: "2nd Place, ML Competition ASU", description: "Built ML models (regression & classification) to predict Airbnb guest satisfaction. Applied feature engineering, sentiment analysis (NLTK), and SMOTE to achieve 80% accuracy.", technologies: ["AI/ML", "Python", "Scikit-learn", "TensorFlow", "NLP"] },
+                    { title: "Map Routing 'GPS'", date: "Jun 2025", type: "Project", award: null, description: "Implemented shortest path algorithms (Super Source Dijkstra, A*) to calculate optimal routes between locations on a map, focusing on time complexity and performance optimization.", technologies: ["Software Engineering", "C++", "Algorithms"] },
+                    { title: "Operating System project (FOS)", date: "Dec 2024", type: "Project", award: "Full Mark, 6th place", description: "Developed a small educational OS in C, including process management, memory/CPU management, and shared resources (simulated via Bochs), emphasizing modular design.", technologies: ["Software Engineering", "C++"] },
+                    { title: "Forest Fire Detection", date: "Oct 2023", type: "Hackathon", award: "3rd Place, Beyond Earth Hackathon", description: "Integrated AI, IoT, and satellite tech for forest fire combat. Contributed to smoke/fire detection using Logistic Regression and CNN on imagery and developed a CubeSat prototype.", technologies: ["AI/ML", "Python", "IoT", "CNN"] },
+                    { title: "Furniture Inventory Management", date: "Dec 2023", type: "Project", award: null, description: "Designed relational schemas and implemented a database system using SQL Developer and form builders to create user-friendly interfaces for inventory tracking.", technologies: ["Data Engineering", "Oracle SQL"] },
+                    { title: "Planto Website", date: "Sep 2024", type: "Competition", award: "1st Place, Front-End Competition", description: "Won first place in a front-end development competition for the 'Planto' website project, demonstrating proficiency in web technologies.", technologies: ["Software Engineering", "JavaScript"] },
+                    { title: "'SquidGame' Robot", date: "Sep 2023", type: "Competition", award: "2nd Place, IOT Competition", description: "Achieved second place in an IoT competition for designing and building an interactive robot, showcasing skills in hardware and software integration.", technologies: ["Software Engineering", "IoT"] }
+                ],
+                experience: [
+                    { role: "Machine Learning Instructor", company: "SupportASU", date: "Oct 2024 - Present", description: "Delivering ML sessions, explaining core concepts, and guiding students in applying algorithms on real datasets." },
+                    { role: "Data Engineering Intern", company: "Ejada", date: "Jul 2025 - Aug 2025", description: "Worked with databases, data warehouses, and ETL pipelines, using tools like Informatica for data integration in banking analytics." },
+                    { role: "Artificial Intelligence Intern", company: "Information Technology Institute (ITI)", date: "Jul 2024 - Aug 2024", description: "Trained on Python, NumPy, Pandas, and ML/Deep Learning frameworks. Applied AI models using scikit-learn and TensorFlow." },
+                    { role: "AI Instructor", company: "RoboTech", date: "Oct 2023 - May 2024", description: "Taught fundamentals of AI and ML. Led hands-on projects integrating AI models with IoT devices." }
+                ],
+                education: [
+                    { degree: "Bachelor's, Computer & Information Science", institution: "Ain Shams University", date: "2022 - 2026", description: "Pursuing a comprehensive curriculum focused on computer science fundamentals, software engineering, and artificial intelligence." }
+                ],
+                skills: {
+                    "AI/ML": ["Machine Learning", "Deep Learning", "Neural Networks", "NLP", "CNN", "TensorFlow", "Scikit-learn", "BCI"],
+                    "Data Engineering": ["ETL", "Data Modeling", "Data Pipelines", "Oracle SQL", "Informatica"],
+                    "Programming Languages": ["Python", "C++", "C#", "Java", "JavaScript", "Scala", "SQL"],
+                    "Software Engineering": ["Agile", "SDLC", "Scrum", "OOP", "Testing", "Algorithms", "IoT"],
+                    "Tools": ["Visual Studio", "Git & GitHub"]
+                }
+            };
+
+            const projectCount = document.getElementById('project-count');
+            const awardCount = document.getElementById('award-count');
+            const experienceYears = document.getElementById('experience-years');
+
+            const totalProjects = portfolioData.projects.length;
+            const totalAwards = portfolioData.projects.filter(p => p.award).length;
+            projectCount.textContent = totalProjects;
+            awardCount.textContent = totalAwards;
+            experienceYears.textContent = "2+";
+
+            const skillsRadarCtx = document.getElementById('skillsRadarChart').getContext('2d');
+            new Chart(skillsRadarCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['AI/ML', 'Data Engineering', 'Software Engineering', 'Problem Solving', 'Programming'],
+                    datasets: [{
+                        label: 'Competency Level',
+                        data: [9, 8, 7, 9, 8],
+                        backgroundColor: 'rgba(101, 119, 134, 0.2)',
+                        borderColor: 'rgba(101, 119, 134, 1)',
+                        pointBackgroundColor: 'rgba(101, 119, 134, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(101, 119, 134, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: { line: { borderWidth: 2 } },
+                    scales: {
+                        r: {
+                            angleLines: { color: '#E1E8ED' },
+                            grid: { color: '#E1E8ED' },
+                            pointLabels: { font: { size: 12 }, color: '#657786' },
+                            ticks: { display: false, beginAtZero: true, max: 10 }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: function (tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) { return label.join(' '); }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const skillButtonsContainer = document.getElementById('skill-buttons');
+            const skillCategoryTitle = document.getElementById('skill-category-title');
+            const skillList = document.getElementById('skill-list');
+            const relatedProjects = document.getElementById('related-projects');
+
+            Object.keys(portfolioData.skills).forEach((category, index) => {
+                const button = document.createElement('button');
+                button.textContent = category;
+                button.className = 'skill-btn py-2 px-4 rounded-lg text-sm font-semibold';
+                button.dataset.category = category;
+                skillButtonsContainer.appendChild(button);
+                if (index === 0) {
+                    button.classList.add('active');
+                    updateSkillsDisplay(category);
+                }
+            });
+
+            skillButtonsContainer.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    skillButtonsContainer.querySelector('.active').classList.remove('active');
+                    e.target.classList.add('active');
+                    updateSkillsDisplay(e.target.dataset.category);
+                }
+            });
+
+            function updateSkillsDisplay(category) {
+                skillCategoryTitle.textContent = category;
+                skillList.innerHTML = '';
+                portfolioData.skills[category].forEach(skill => {
+                    const li = document.createElement('li');
+                    li.className = "flex items-center text-gray-600";
+                    li.innerHTML = `
+                <span class="w-2 h-2 bg-gray-400 rounded-full mr-3"></span>
+                ${skill}`;
+                    skillList.appendChild(li);
+                });
+
+                relatedProjects.innerHTML = '';
+                const relevantProjects = portfolioData.projects.filter(p => p.technologies.includes(category) || (category === "Programming Languages" && p.technologies.some(t => ["Python", "C++", "Java", "JavaScript", "SQL"].includes(t))));
+                if (relevantProjects.length > 0) {
+                    relevantProjects.forEach(p => {
+                        const projectDiv = document.createElement('div');
+                        projectDiv.className = "p-3 bg-gray-50 rounded-lg border border-gray-200";
+                        projectDiv.innerHTML = `<h4 class="font-semibold text-gray-800">${p.title}</h4>`;
+                        relatedProjects.appendChild(projectDiv);
+                    });
+                } else {
+                    relatedProjects.innerHTML = `<p class="text-gray-500">No specific projects listed for this category. These skills are applied across my work.</p>`;
+                }
+            }
+
+            const projectFiltersContainer = document.getElementById('project-filters');
+            const projectGrid = document.getElementById('project-grid');
+            const allTechs = new Set(portfolioData.projects.flatMap(p => p.technologies));
+            const filterTags = ["All", "Award Winner", ...allTechs];
+
+            filterTags.forEach((tag, index) => {
+                const button = document.createElement('button');
+                button.textContent = tag;
+                button.className = 'skill-btn py-2 px-4 rounded-lg text-sm font-semibold';
+                button.dataset.filter = tag;
+                projectFiltersContainer.appendChild(button);
+                if (index === 0) button.classList.add('active');
+            });
+
+            function renderProjects(filter = 'All') {
+                projectGrid.innerHTML = '';
+                let filteredProjects = portfolioData.projects;
+                if (filter === 'Award Winner') {
+                    filteredProjects = portfolioData.projects.filter(p => p.award);
+                } else if (filter !== 'All') {
+                    filteredProjects = portfolioData.projects.filter(p => p.technologies.includes(filter));
+                }
+
+                filteredProjects.forEach(project => {
+                    const card = document.createElement('div');
+                    card.className = 'card p-6 rounded-xl shadow-sm flex flex-col';
+                    card.innerHTML = `
+                <div class="flex-grow">
+                     ${project.award ? `<p class="text-sm font-semibold text-amber-600 mb-1">🏆 ${project.award}</p>` : ''}
+                    <h3 class="text-lg font-bold text-gray-800">${project.title}</h3>
+                    <p class="text-sm text-gray-500 mt-1 mb-3">${project.date}</p>
+                    <p class="text-gray-600 text-sm mb-4">${project.description}</p>
+                </div>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                    ${project.technologies.map(t => `<span class="project-tag text-xs font-medium px-2 py-1 rounded-md">${t}</span>`).join('')}
+                </div>
+            `;
+                    projectGrid.appendChild(card);
+                });
+            }
+
+            projectFiltersContainer.addEventListener('click', e => {
+                if (e.target.tagName === 'BUTTON') {
+                    projectFiltersContainer.querySelector('.active').classList.remove('active');
+                    e.target.classList.add('active');
+                    renderProjects(e.target.dataset.filter);
+                }
+            });
+
+            renderProjects();
+
+            const timelineContainer = document.getElementById('career-timeline-container');
+            const timelineEvents = [...portfolioData.education, ...portfolioData.experience].sort((a, b) => new Date('01 ' + b.date.split(' - ')[0]) - new Date('01 ' + a.date.split(' - ')[0]));
+
+            timelineEvents.forEach(event => {
+                const item = document.createElement('div');
+                item.className = 'timeline-item relative';
+                item.innerHTML = `
+            <div class="p-4 card rounded-xl shadow-sm">
+                <p class="text-xs text-gray-500 font-semibold uppercase">${event.degree ? 'EDUCATION' : 'EXPERIENCE'}</p>
+                <h3 class="text-lg font-bold text-gray-800 mt-1">${event.role || event.degree}</h3>
+                <p class="text-md font-semibold text-gray-600">${event.company || event.institution}</p>
+                <p class="text-sm text-gray-400 my-2">${event.date}</p>
+                <p class="text-sm text-gray-600">${event.description}</p>
+            </div>
+        `;
+                timelineContainer.appendChild(item);
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 120) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('nav-active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('nav-active');
+                    }
+                });
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>
