@@ -33,7 +33,7 @@ Hi! I'm **Rana Nasser**, a passionate developer and AI enthusiast. I enjoy creat
 
 ---
 
-Check out the live portfolio here: [Portfolio Website](index.html)
+Check out the live portfolio here: [Portfolio Website](https://github.com/rananasser760/Portfolio/blob/main/index.html)
 ---
 Check out the live interactive resume here: [Interactive Resume Website](https://rananasser760.github.io/Portfolio/resume.html)
 ---
