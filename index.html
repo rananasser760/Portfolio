@@ -1,794 +1,742 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rana Nasser Mohamed | AI & Data Engineering Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0a192f;
-            color: #ccd6f6;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rana Nasser Mohamed — AI &amp; Quantum Computing</title>
+<meta name="description" content="Rana Nasser Mohamed — AI Engineer, AI &amp; Quantum Computing Researcher, Data Engineer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0a1a;
+    --bg-elevated:#141228;
+    --bg-card:#171531;
+    --ink:#f2eefc;
+    --ink-dim:#a79fc9;
+    --line:#2b2650;
+    --violet:#8b6bff;
+    --violet-soft:rgba(139,107,255,.14);
+    --amber:#ffb454;
+    --amber-soft:rgba(255,180,84,.14);
+    --radius:14px;
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box;}
+  html{background:var(--bg);}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans',sans-serif;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4,.display{font-family:'Space Grotesk',sans-serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  ::selection{background:var(--violet);color:#fff;}
 
-        #particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.5;
-        }
+  a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{
+    outline:2px solid var(--amber);
+    outline-offset:3px;
+    border-radius:4px;
+  }
 
-        .accent-color {
-            color: #64ffda;
-        }
+  /* background field */
+  #field{position:fixed;inset:0;z-index:-1;opacity:.55;}
 
-        .accent-bg {
-            background-color: #64ffda;
-        }
+  /* header */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    background:rgba(11,10,26,.72);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.bar{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:var(--maxw);margin:0 auto;}
+  .logo{font-weight:600;font-size:1.05rem;letter-spacing:.02em;display:flex;align-items:baseline;gap:6px;}
+  .logo .ket{color:var(--violet);}
+  .navlinks{display:flex;gap:28px;font-size:.88rem;color:var(--ink-dim);}
+  .navlinks a{position:relative;padding:4px 0;transition:color .2s;}
+  .navlinks a:hover,.navlinks a.active{color:var(--ink);}
+  .navlinks a.active::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--amber);border-radius:2px;}
+  .navlinks{display:none;}
+  @media(min-width:800px){.navlinks{display:flex;}}
+  .navcta{display:none;border:1px solid var(--violet);color:var(--violet);padding:8px 16px;border-radius:8px;font-size:.82rem;font-family:'IBM Plex Mono',monospace;transition:.2s;}
+  .navcta:hover{background:var(--violet-soft);}
+  @media(min-width:800px){.navcta{display:inline-block;}}
+  #menuBtn{background:none;border:1px solid var(--line);border-radius:8px;color:var(--ink);width:38px;height:38px;display:flex;align-items:center;justify-content:center;}
+  @media(min-width:800px){#menuBtn{display:none;}}
+  #mobileMenu{display:none;flex-direction:column;gap:14px;padding:0 24px 20px;}
+  #mobileMenu.open{display:flex;}
+  #mobileMenu a{color:var(--ink-dim);font-size:.95rem;}
 
-        .light-slate {
-            color: #8892b0;
-        }
+  main{padding-top:88px;}
+  section{padding:88px 0;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;color:var(--violet);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .eyebrow::after{content:"";flex:1;height:1px;background:var(--line);}
+  h2.sectitle{font-size:clamp(1.6rem,3vw,2.1rem);margin:0 0 40px;}
 
-        .card-bg {
-            background-color: #112240;
-        }
+  /* ---------- HERO ---------- */
+  #hero{min-height:calc(100vh - 88px);display:grid;grid-template-columns:1fr;align-items:center;gap:40px;padding-top:20px;padding-bottom:40px;}
+  @media(min-width:900px){#hero{grid-template-columns:1.1fr .9fr;}}
+  .hero-eyebrow{font-family:'IBM Plex Mono',monospace;color:var(--amber);font-size:.85rem;margin-bottom:18px;}
+  #hero h1{font-size:clamp(2.1rem,5vw,3.4rem);line-height:1.1;margin:0 0 10px;font-weight:600;}
+  #hero h1 .accent{color:var(--violet);}
+  #hero .role{font-size:clamp(1rem,2vw,1.3rem);color:var(--ink-dim);min-height:1.6em;margin:0 0 20px;}
+  #hero .role .cursor{display:inline-block;width:2px;height:1em;background:var(--amber);margin-left:4px;vertical-align:-2px;animation:blink 1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+  #hero p.lede{max-width:52ch;color:var(--ink-dim);margin:0 0 30px;}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:34px;}
+  .btn{font-family:'IBM Plex Mono',monospace;font-size:.85rem;padding:12px 20px;border-radius:9px;transition:.2s;display:inline-flex;align-items:center;gap:8px;}
+  .btn-solid{background:var(--violet);color:#fff;}
+  .btn-solid:hover{background:#7a58f2;transform:translateY(-1px);}
+  .btn-ghost{border:1px solid var(--line);color:var(--ink-dim);}
+  .btn-ghost:hover{border-color:var(--violet);color:var(--ink);}
+  .hero-social{display:flex;gap:16px;}
+  .hero-social a{color:var(--ink-dim);transition:.2s;}
+  .hero-social a:hover{color:var(--amber);transform:translateY(-2px);}
 
-        .nav-link {
-            transition: color 0.3s;
-        }
+  .qubit-stage{position:relative;height:340px;display:flex;align-items:center;justify-content:center;}
+  #qubit{width:100%;max-width:360px;height:auto;}
+  .qubit-caption{position:absolute;bottom:0;left:50%;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--ink-dim);text-align:center;}
+  .qubit-caption b{color:var(--amber);}
 
-        .nav-link:hover {
-            color: #64ffda;
-        }
+  /* ---------- ABOUT ---------- */
+  .about-grid{display:grid;gap:36px;}
+  @media(min-width:860px){.about-grid{grid-template-columns:1.3fr .7fr;}}
+  .about-grid p{color:var(--ink-dim);margin:0 0 16px;}
+  .about-grid strong{color:var(--ink);font-weight:600;}
+  .stat-card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;}
+  .stat-card + .stat-card{margin-top:14px;}
+  .stat-num{font-family:'Space Grotesk',sans-serif;font-size:1.6rem;color:var(--amber);}
+  .stat-label{font-size:.8rem;color:var(--ink-dim);}
+  .skill-chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+  .chip{font-family:'IBM Plex Mono',monospace;font-size:.75rem;padding:6px 12px;border:1px solid var(--line);border-radius:999px;color:var(--ink-dim);}
 
-        .highlight-box {
-            border: 1px solid #64ffda;
-        }
+  /* ---------- EXPERIENCE (circuit) ---------- */
+  .circuit{position:relative;padding-left:26px;}
+  .circuit::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--violet),var(--amber));opacity:.5;}
+  .gate{position:relative;padding-bottom:36px;}
+  .gate:last-child{padding-bottom:0;}
+  .gate-node{position:absolute;left:-26px;top:2px;width:14px;height:14px;border-radius:4px;background:var(--bg);border:2px solid var(--violet);}
+  .gate-card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;}
+  .gate-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:8px;}
+  .gate-role{font-weight:600;font-size:1.05rem;}
+  .gate-org{color:var(--violet);}
+  .gate-time{font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--ink-dim);white-space:nowrap;}
+  .gate-card p{color:var(--ink-dim);margin:0;font-size:.94rem;}
 
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
+  /* ---------- PROJECTS ---------- */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+  .filter-btn{font-family:'IBM Plex Mono',monospace;font-size:.78rem;padding:8px 14px;border-radius:999px;border:1px solid var(--line);color:var(--ink-dim);background:none;cursor:pointer;transition:.2s;}
+  .filter-btn:hover{border-color:var(--violet);}
+  .filter-btn.active{background:var(--violet);color:#fff;border-color:var(--violet);}
+  .proj-grid{display:grid;grid-template-columns:1fr;gap:18px;}
+  @media(min-width:720px){.proj-grid{grid-template-columns:1fr 1fr;}}
+  .proj-card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;display:flex;flex-direction:column;transition:.25s;cursor:pointer;}
+  .proj-card:hover{border-color:var(--violet);transform:translateY(-3px);}
+  .proj-card.featured{grid-column:1/-1;background:linear-gradient(135deg,var(--bg-card),var(--violet-soft));}
+  .proj-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:10px;}
+  .proj-badge{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--amber);}
+  .proj-card h3{margin:0 0 8px;font-size:1.15rem;}
+  .proj-card p.desc{color:var(--ink-dim);font-size:.92rem;margin:0 0 16px;flex:1;}
+  .proj-tags{display:flex;flex-wrap:wrap;gap:6px;}
+  .tag{font-family:'IBM Plex Mono',monospace;font-size:.68rem;padding:4px 9px;border-radius:6px;background:var(--bg-elevated);color:var(--ink-dim);}
+  .proj-more{margin-top:14px;font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--violet);}
 
-        .modal-backdrop {
-            background-color: rgba(10, 25, 47, 0.8);
-        }
+  /* ---------- QUANTUM ---------- */
+  .qalgo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;}
+  .qalgo{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;}
+  .qalgo .qname{font-family:'Space Grotesk',sans-serif;color:var(--amber);font-weight:600;margin-bottom:6px;}
+  .qalgo p{margin:0;color:var(--ink-dim);font-size:.85rem;}
+  .qtools{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap;}
 
-        .loader {
-            border-top-color: #64ffda;
-            -webkit-animation: spin 1s linear infinite;
-            animation: spin 1s linear infinite;
-        }
+  /* ---------- AWARDS ---------- */
+  .awards-list{display:grid;gap:12px;}
+  .award{display:flex;gap:16px;align-items:flex-start;background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 20px;}
+  .award .medal{font-family:'IBM Plex Mono',monospace;color:var(--amber);font-size:.78rem;white-space:nowrap;padding-top:2px;}
+  .award p{margin:0;color:var(--ink-dim);font-size:.9rem;}
+  .award strong{color:var(--ink);}
 
-        @-webkit-keyframes spin {
-            0% {
-                -webkit-transform: rotate(0deg);
-            }
+  /* ---------- WRITING ---------- */
+  .writing-card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:32px;display:flex;flex-direction:column;gap:16px;align-items:flex-start;}
+  @media(min-width:760px){.writing-card{flex-direction:row;align-items:center;justify-content:space-between;}}
+  .writing-card p{color:var(--ink-dim);margin:0;max-width:56ch;}
 
-            100% {
-                -webkit-transform: rotate(360deg);
-            }
-        }
+  /* ---------- CONTACT ---------- */
+  #contact{text-align:center;}
+  #contact h2{font-size:clamp(1.8rem,4vw,2.6rem);margin:0 0 14px;}
+  #contact p.lede{color:var(--ink-dim);max-width:50ch;margin:0 auto 30px;}
+  .contact-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:30px;}
+  .contact-grid{display:grid;grid-template-columns:1fr;gap:10px;max-width:480px;margin:0 auto;}
+  @media(min-width:560px){.contact-grid{grid-template-columns:1fr 1fr;}}
+  .contact-item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--bg-card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--ink-dim);}
+  .copy-btn{background:none;border:none;color:var(--violet);cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:.72rem;}
+  .copy-btn:hover{color:var(--amber);}
 
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
+  footer{padding:30px 24px;text-align:center;color:var(--ink-dim);font-size:.8rem;border-top:1px solid var(--line);}
+  .footer-social{display:flex;justify-content:center;gap:18px;margin-bottom:14px;}
+  .footer-social a{color:var(--ink-dim);transition:.2s;display:inline-flex;}
+  .footer-social a:hover{color:var(--amber);transform:translateY(-2px);}
 
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+  /* modal */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(6,5,16,.75);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;padding:20px;z-index:100;}
+  .modal-backdrop.open{display:flex;}
+  .modal{background:var(--bg-elevated);border:1px solid var(--line);border-radius:var(--radius);max-width:640px;width:100%;max-height:85vh;overflow-y:auto;}
+  .modal-head{display:flex;justify-content:space-between;align-items:center;padding:22px 24px;border-bottom:1px solid var(--line);}
+  .modal-head h3{margin:0;font-size:1.15rem;}
+  .modal-close{background:none;border:none;color:var(--ink-dim);cursor:pointer;font-size:1.1rem;}
+  .modal-close:hover{color:var(--amber);}
+  .modal-body{padding:22px 24px;color:var(--ink-dim);font-size:.92rem;}
+  .modal-body ul{padding-left:18px;margin:14px 0;}
+  .modal-body li{margin-bottom:6px;}
+  .modal-body .tag{margin-right:6px;margin-bottom:6px;display:inline-block;}
 
-        .typing-cursor {
-            display: inline-block;
-            width: 3px;
-            height: 2.5rem;
-            /* Match text size */
-            background-color: #64ffda;
-            animation: blink 1s infinite;
-            margin-left: 8px;
-            vertical-align: middle;
-        }
+  .fade{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;}
+  .fade.in{opacity:1;transform:translateY(0);}
 
-        @keyframes blink {
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--violet);color:#fff;padding:10px 18px;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:.78rem;opacity:0;pointer-events:none;transition:.25s;z-index:200;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0;
-            }
-        }
-
-        @media (min-width: 768px) {
-            .typing-cursor {
-                height: 3.75rem;
-            }
-        }
-
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}
+    .fade{opacity:1;transform:none;}
+  }
+</style>
 </head>
+<body>
+<canvas id="field"></canvas>
 
-<body class="leading-relaxed">
-    <canvas id="particle-canvas"></canvas>
-
-    <!-- Header & Navigation -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-opacity-80 backdrop-blur-md bg-[#0a192f] shadow-md">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold accent-color">RNM</a>
-            <div class="hidden md:flex space-x-6 text-sm">
-                <a href="#about" class="nav-link">About</a>
-                <a href="#experience" class="nav-link">Experience</a>
-                <a href="#projects" class="nav-link">Projects</a>
-                <a href="#contact" class="nav-link">Contact</a>
-            </div>
-            <a href="mailto:rananasser760@gmail.com"
-                class="hidden md:block border border-cyan-400 text-cyan-400 px-4 py-2 rounded-md text-sm hover:bg-cyan-400 hover:bg-opacity-10 transition-colors">
-                Email Me
-            </a>
-            <button id="mobile-menu-button" class="md:hidden text-2xl">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="feather feather-menu">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-            </button>
-        </nav>
-        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
-            <a href="#about" class="block py-2 nav-link">About</a>
-            <a href="#experience" class="block py-2 nav-link">Experience</a>
-            <a href="#projects" class="block py-2 nav-link">Projects</a>
-            <a href="#contact" class="block py-2 nav-link">Contact</a>
-            <a href="mailto:rananasser760@gmail.com"
-                class="block mt-2 text-center border border-cyan-400 text-cyan-400 px-4 py-2 rounded-md text-sm hover:bg-cyan-400 hover:bg-opacity-10 transition-colors">
-                Email Me
-            </a>
-        </div>
-    </header>
-
-    <main class="container mx-auto px-6 md:px-16 lg:px-24 pt-24">
-
-        <section id="hero" class="min-h-[70vh] flex flex-col justify-center">
-            <h1 class="text-lg accent-color mb-4">Hi, my name is</h1>
-            <h2 class="text-4xl md:text-7xl font-bold text-slate-100">Rana Nasser Mohamed.</h2>
-            <h3 id="typing-subtitle"
-                class="text-4xl md:text-6xl font-bold light-slate mt-2 min-h-[50px] md:min-h-[70px]"></h3>
-            <p class="mt-6 max-w-xl light-slate">
-                I'm a Computer Science student at Ain Shams University with a passion for Artificial Intelligence, Data
-                Engineering, and Physics. I'm focused on building innovative solutions that leverage data to create
-                impact.
-            </p>
-            <div class="mt-8 flex space-x-4">
-                <a href="https://www.linkedin.com/in/rana-nasser-7b2375291/" target="_blank"
-                    class="p-3 hover:text-cyan-400 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                        <rect x="2" y="9" width="4" height="12"></rect>
-                        <circle cx="4" cy="4" r="2"></circle>
-                    </svg>
-                </a>
-                <a href="https://github.com/rananasser760" target="_blank"
-                    class="p-3 hover:text-cyan-400 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path
-                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                        </path>
-                    </svg>
-                </a>
-            </div>
-        </section>
-
-        <section id="about" class="py-24 fade-in-section">
-            <h2 class="text-3xl font-bold mb-8 text-slate-100 flex items-center">
-                <span class="accent-color text-2xl mr-3">01.</span> About Me
-                <span class="ml-4 h-px w-32 bg-slate-700"></span>
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-10">
-                <div class="md:col-span-3 light-slate space-y-4">
-                    <p>
-                        Hello! I'm Rana, a computer science student deeply fascinated by the intersection of technology
-                        and science. My journey began at Ain Shams University, where I developed a strong foundation in
-                        software engineering and discovered my passion for artificial intelligence.
-                    </p>
-                    <p>
-                        I've had the privilege of interning at leading tech institutions like <span
-                            class="accent-color">ITI</span> and <span class="accent-color">Ejada</span>, where I've
-                        worked on real-world projects involving machine learning models and large-scale data pipelines.
-                        I'm also passionate about sharing knowledge, which led me to become an AI and ML instructor for
-                        student organizations.
-                    </p>
-                    <p>Here are a few technologies I've been working with recently:</p>
-                    <ul class="grid grid-cols-2 gap-2 text-sm">
-                        <li class="flex items-center"><span class="accent-color mr-2">▹</span>Python & TensorFlow</li>
-                        <li class="flex items-center"><span class="accent-color mr-2">▹</span>SQL & ETL Pipelines</li>
-                        <li class="flex items-center"><span class="accent-color mr-2">▹</span>Scikit-learn</li>
-                        <li class="flex items-center"><span class="accent-color mr-2">▹</span>Informatica PowerCenter
-                        </li>
-                        <li class="flex items-center"><span class="accent-color mr-2">▹</span>C++ & Java</li>
-                        <li class="flex items-center"><span class="accent-color mr-2">▹</span>Git & GitHub</li>
-                    </ul>
-                </div>
-                <div class="md:col-span-2 flex justify-center items-start">
-                    <div class="w-64 h-64 relative group">
-                        <div
-                            class="absolute inset-0 border-2 border-cyan-400 rounded-md transition-transform group-hover:translate-x-1 group-hover:translate-y-1">
-                        </div>
-                        <img src="https://placehold.co/400x400/0a192f/64ffda?text=RNM" alt="Rana Nasser Mohamed"
-                            class="absolute inset-0 w-full h-full object-cover rounded-md -translate-x-3 -translate-y-3 transition-transform group-hover:-translate-x-4 group-hover:-translate-y-4">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="experience" class="py-24 fade-in-section">
-            <h2 class="text-3xl font-bold mb-8 text-slate-100 flex items-center">
-                <span class="accent-color text-2xl mr-3">02.</span> Where I've Worked
-                <span class="ml-4 h-px w-32 bg-slate-700"></span>
-            </h2>
-            <div class="space-y-8">
-                <div class="card-bg p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-bold text-slate-100">Machine Learning Instructor <span
-                            class="accent-color">@ SupportASU</span></h3>
-                    <p class="text-sm light-slate mb-3">Oct 2024 - Present</p>
-                    <p class="light-slate">Delivered ML sessions to students, explaining core concepts like regression
-                        and classification. Helped them apply algorithms using real-world datasets and evaluate model
-                        performance.</p>
-                </div>
-                <div class="card-bg p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-bold text-slate-100">Artificial Intelligence Intern <span
-                            class="accent-color">@ ITI</span></h3>
-                    <p class="text-sm light-slate mb-3">Jul 2024 - Aug 2024</p>
-                    <p class="light-slate">Trained on Python, NumPy, Pandas, Machine Learning, and Deep Learning
-                        frameworks. Applied AI models to real datasets using scikit-learn and TensorFlow to generate
-                        practical insights.</p>
-                </div>
-                <div class="card-bg p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-bold text-slate-100">Data Engineering Intern <span class="accent-color">@
-                            Ejada</span></h3>
-                    <p class="text-sm light-slate mb-3">Jul 2025 - Aug 2025</p>
-                    <p class="light-slate">Worked with databases, data warehouses, and ETL pipelines. Utilized tools
-                        like Informatica for data integration to ensure data integrity in complex banking analytics
-                        systems.</p>
-                </div>
-                <div class="card-bg p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-bold text-slate-100">AI Instructor <span class="accent-color">@
-                            RoboTech</span></h3>
-                    <p class="text-sm light-slate mb-3">Oct 2023 - May 2024</p>
-                    <p class="light-slate">Taught fundamentals of AI and machine learning to fellow students. Led
-                        hands-on projects that integrated AI models with IoT devices, fostering teamwork and practical
-                        application.</p>
-                </div>
-            </div>
-        </section>
-
-
-        <section id="projects" class="py-24 fade-in-section">
-            <h2 class="text-3xl font-bold mb-8 text-slate-100 flex items-center">
-                <span class="accent-color text-2xl mr-3">03.</span> Things I've Built
-                <span class="ml-4 h-px w-32 bg-slate-700"></span>
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                <div
-                    class="card-bg p-6 rounded-lg shadow-lg flex flex-col justify-between transition-transform duration-300 project-card fade-in-section">
-                    <div>
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="accent-color">🏆 2nd Place Award</span>
-                            <a href="#" class="text-slate-400 hover:text-cyan-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-github">
-                                    <path
-                                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                                    </path>
-                                </svg>
-                            </a>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-100 mb-2">Guest Satisfaction Prediction</h3>
-                        <p class="text-sm light-slate mb-4 project-description">Built ML models to predict Airbnb guest
-                            satisfaction with 80% accuracy using regression, classification, and NLP for sentiment
-                            analysis.</p>
-                        <button class="explain-project-btn text-sm accent-color hover:underline"
-                            data-title="Guest Satisfaction Prediction"
-                            data-description="Built ML models to predict Airbnb guest satisfaction with 80% accuracy using regression, classification, and NLP for sentiment analysis. Technologies used: Python, Scikit-learn, TensorFlow, NLTK.">✨
-                            Explain with AI</button>
-                    </div>
-                    <div class="text-xs light-slate flex flex-wrap gap-2 mt-4">
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">Python</span>
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">Scikit-learn</span>
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">TensorFlow</span>
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">NLTK</span>
-                    </div>
-                </div>
-                <div class="card-bg p-6 rounded-lg shadow-lg flex flex-col justify-between transition-transform duration-300 project-card fade-in-section"
-                    style="transition-delay: 100ms;">
-                    <div>
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="text-slate-400">Internship Project</span>
-                            <a href="#" class="text-slate-400 hover:text-cyan-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-github">
-                                    <path
-                                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                                    </path>
-                                </svg>
-                            </a>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-100 mb-2">Comprehensive Banking Analytics</h3>
-                        <p class="text-sm light-slate mb-4 project-description">Developed robust ETL pipelines to
-                            analyze transactions, loans, and investments, delivering accurate financial reports for a
-                            banking system.</p>
-                        <button class="explain-project-btn text-sm accent-color hover:underline"
-                            data-title="Comprehensive Banking Analytics"
-                            data-description="Developed robust ETL pipelines using Oracle SQL and Informatica PowerCenter to analyze transactions, loans, and investments, delivering accurate financial reports for a banking system.">✨
-                            Explain with AI</button>
-                    </div>
-                    <div class="text-xs light-slate flex flex-wrap gap-2 mt-4">
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">Oracle SQL</span>
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">Informatica</span>
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">ETL</span>
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">Data Warehousing</span>
-                    </div>
-                </div>
-                <div class="card-bg p-6 rounded-lg shadow-lg flex flex-col justify-between transition-transform duration-300 project-card fade-in-section"
-                    style="transition-delay: 200ms;">
-                    <div>
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="text-slate-400">Competition Project</span>
-                            <a href="#" class="text-slate-400 hover:text-cyan-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-github">
-                                    <path
-                                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                                    </path>
-                                </svg>
-                            </a>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-100 mb-2">AI-Based EEG Signal Classification</h3>
-                        <p class="text-sm light-slate mb-4 project-description">Designed and trained CNN models to
-                            classify EEG signals for Brain-Computer Interfaces (BCI), achieving 70% accuracy on noisy
-                            biosignal data.</p>
-                        <button class="explain-project-btn text-sm accent-color hover:underline"
-                            data-title="AI-Based EEG Signal Classification"
-                            data-description="Designed and trained CNN models to classify EEG signals for Brain-Computer Interfaces (BCI), achieving 70% accuracy on noisy biosignal data.">✨
-                            Explain with AI</button>
-                    </div>
-                    <div class="text-xs light-slate flex flex-wrap gap-2 mt-4">
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">CNN</span>
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">Signal Processing</span>
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">BCI</span>
-                    </div>
-                </div>
-                <div
-                    class="card-bg p-6 rounded-lg shadow-lg flex flex-col justify-between transition-transform duration-300 project-card fade-in-section">
-                    <div>
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="accent-color">🏆 3rd Place Award</span>
-                            <a href="#" class="text-slate-400 hover:text-cyan-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-github">
-                                    <path
-                                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                                    </path>
-                                </svg>
-                            </a>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-100 mb-2">Forest Fire Detection System</h3>
-                        <p class="text-sm light-slate mb-4 project-description">Integrated AI, IoT, and satellite tech
-                            for a hackathon project. Contributed to smoke/fire detection models and developed a CubeSat
-                            sensor prototype.</p>
-                        <button class="explain-project-btn text-sm accent-color hover:underline"
-                            data-title="Forest Fire Detection System"
-                            data-description="Integrated AI, IoT, and satellite tech for a hackathon project. Contributed to smoke/fire detection models using Logistic Regression and CNN and developed a CubeSat sensor prototype.">✨
-                            Explain with AI</button>
-                    </div>
-                    <div class="text-xs light-slate flex flex-wrap gap-2 mt-4">
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">AI</span>
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">IoT</span>
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">CNN</span>
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">Logistic Regression</span>
-                    </div>
-                </div>
-                <div class="card-bg p-6 rounded-lg shadow-lg flex flex-col justify-between transition-transform duration-300 project-card fade-in-section"
-                    style="transition-delay: 100ms;">
-                    <div>
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="accent-color">🏆 6th Place / Full Mark</span>
-                            <a href="#" class="text-slate-400 hover:text-cyan-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-github">
-                                    <path
-                                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                                    </path>
-                                </svg>
-                            </a>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-100 mb-2">Operating System (FOS)</h3>
-                        <p class="text-sm light-slate mb-4 project-description">Developed a small educational OS in C,
-                            implementing process management, memory/CPU management, and shared resources in a simulated
-                            environment.</p>
-                        <button class="explain-project-btn text-sm accent-color hover:underline"
-                            data-title="Operating System (FOS)"
-                            data-description="Developed a small educational OS in C, implementing process management, memory/CPU management, and shared resources in a simulated environment using Bochs.">✨
-                            Explain with AI</button>
-                    </div>
-                    <div class="text-xs light-slate flex flex-wrap gap-2 mt-4">
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">C</span>
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">Bochs</span>
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">OS Concepts</span>
-                    </div>
-                </div>
-                <div class="card-bg p-6 rounded-lg shadow-lg flex flex-col justify-between transition-transform duration-300 project-card fade-in-section"
-                    style="transition-delay: 200ms;">
-                    <div>
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="text-slate-400">Academic Project</span>
-                            <a href="#" class="text-slate-400 hover:text-cyan-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-github">
-                                    <path
-                                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                                    </path>
-                                </svg>
-                            </a>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-100 mb-2">Map Routing "GPS"</h3>
-                        <p class="text-sm light-slate mb-4 project-description">Implemented shortest path algorithms
-                            like Super Source Dijkstra and A* to build a system for calculating optimal routes on a map,
-                            focusing on performance.</p>
-                        <button class="explain-project-btn text-sm accent-color hover:underline"
-                            data-title="Map Routing &quot;GPS&quot;"
-                            data-description="Implemented shortest path algorithms like Super Source Dijkstra and A* to build a system for calculating optimal routes on a map, focusing on performance and time complexity.">✨
-                            Explain with AI</button>
-                    </div>
-                    <div class="text-xs light-slate flex flex-wrap gap-2 mt-4">
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">C++</span>
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">Algorithms</span>
-                        <span class="bg-gray-700/50 px-2 py-1 rounded">Data Structures</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="py-24 text-center fade-in-section">
-            <h2 class="text-3xl font-bold mb-4 text-slate-100 flex items-center justify-center">
-                <span class="accent-color text-2xl mr-3">04.</span> What's Next?
-            </h2>
-            <h3 class="text-4xl md:text-5xl font-bold text-slate-100 mb-4">Get In Touch</h3>
-            <p class="max-w-xl mx-auto light-slate mb-8">
-                I'm currently seeking new opportunities to apply my skills in AI and Data Engineering. Whether you have
-                a question, a project idea, or just want to connect, my inbox is always open. I'll get back to you as
-                soon as I can!
-            </p>
-            <a href="mailto:rananasser760@gmail.com"
-                class="inline-block border border-cyan-400 text-cyan-400 px-8 py-4 rounded-md text-lg hover:bg-cyan-400 hover:bg-opacity-10 transition-colors">
-                Say Hello
-            </a>
-
-            <div id="ai-assistant" class="mt-20 text-left max-w-2xl mx-auto card-bg p-6 md:p-8 rounded-lg">
-                <h4 class="text-2xl font-bold text-slate-100 mb-4 flex items-center">
-                    <span class="accent-color mr-2">✨</span> AI-Powered Assistant
-                </h4>
-                <p class="light-slate mb-4 text-sm">
-                    Want to see how my skills align with a role? Enter a job title below, and my AI assistant will
-                    generate a cover letter snippet highlighting my relevant experience.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <input type="text" id="job-title-input" placeholder="e.g., 'Machine Learning Engineer'"
-                        class="flex-grow bg-[#0a192f] border border-slate-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all">
-                    <button id="generate-snippet-btn"
-                        class="bg-cyan-400/10 border border-cyan-400 text-cyan-400 px-6 py-2 rounded-md hover:bg-cyan-400/20 transition-colors flex justify-center items-center">
-                        Generate
-                    </button>
-                </div>
-                <div id="snippet-output" class="mt-6 text-sm light-slate border-t border-slate-700 pt-4"
-                    style="display: none;">
-                    <h5 class="font-bold text-slate-100 mb-2">Generated Snippet:</h5>
-                    <div id="snippet-content" class="whitespace-pre-wrap"></div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="text-center py-6">
-        <div class="flex justify-center space-x-4 mb-4 md:hidden">
-            <a href="https://www.linkedin.com/in/rana-nasser-7b2375291/" target="_blank"
-                class="p-2 hover:text-cyan-400 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                    <rect x="2" y="9" width="4" height="12"></rect>
-                    <circle cx="4" cy="4" r="2"></circle>
-                </svg>
-            </a>
-            <a href="https://github.com/rananasser760" target="_blank"
-                class="p-2 hover:text-cyan-400 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                    </path>
-                </svg>
-            </a>
-        </div>
-        <p class="text-sm light-slate">Designed & Built by Rana Nasser Mohamed.</p>
-    </footer>
-
-    <div id="ai-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
-        <div class="card-bg rounded-lg shadow-2xl max-w-2xl w-full mx-auto" id="ai-modal-content-wrapper">
-            <div class="p-6 border-b border-slate-700 flex justify-between items-center">
-                <h4 class="text-xl font-bold text-slate-100" id="modal-title">AI Project Insight</h4>
-                <button id="close-modal-btn" class="text-slate-400 hover:text-cyan-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-            <div class="p-6" id="modal-body" style="min-height: 150px;">
-                <!-- Content will be injected here -->
-            </div>
-        </div>
+<header>
+  <nav class="bar">
+    <a href="#hero" class="logo"><span class="ket">|ψ⟩</span> Rana Nasser</a>
+    <div class="navlinks" id="navlinks">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#quantum">Quantum</a>
+      <a href="#awards">Awards</a>
+      <a href="#writing">Writing</a>
+      <a href="#contact">Contact</a>
     </div>
+    <a href="mailto:rananasser760@gmail.com" class="navcta">Say hello →</a>
+    <button id="menuBtn" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </nav>
+  <div id="mobileMenu">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#quantum">Quantum</a>
+    <a href="#awards">Awards</a>
+    <a href="#writing">Writing</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
+<main>
 
-            const canvas = document.getElementById('particle-canvas');
-            const ctx = canvas.getContext('2d');
-            let particles = [];
+  <!-- HERO -->
+  <section id="hero" class="wrap">
+    <div>
+      <div class="hero-eyebrow mono">CS Graduate · Ain Shams University · Class of 2026</div>
+      <h1>Rana Nasser <span class="accent">Mohamed</span></h1>
+      <div class="role mono" id="typedRole"></div>
+      <p class="lede">I build systems that sit at the edge of two probabilistic worlds — machine learning models that reason under uncertainty, and quantum circuits that compute in superposition. Currently shipping <strong style="color:var(--ink)">JobLens</strong>, an AI recruitment integrity platform, as my graduation project.</p>
+      <div class="hero-actions">
+        <a class="btn btn-solid" href="https://drive.google.com/drive/folders/1YpGfEurCAtLz8HPERlMMg8zzecEAFnj9" target="_blank" rel="noopener">↓ Download CV</a>
+        <a class="btn btn-ghost" href="#projects">View projects</a>
+        <a class="btn btn-ghost" href="#contact">Get in touch</a>
+      </div>
+      <div class="hero-social">
+        <a href="https://www.linkedin.com/in/rana-nasser-7b2375291" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://github.com/rananasser760" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        </a>
+        <a href="mailto:rananasser760@gmail.com" aria-label="Email">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z" opacity="0"/><path d="M22 6l-10 7L2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="qubit-stage">
+      <svg id="qubit" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#8b6bff" stop-opacity=".5"/>
+            <stop offset="100%" stop-color="#8b6bff" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle cx="160" cy="160" r="120" fill="url(#glow)"/>
+        <ellipse cx="160" cy="160" rx="120" ry="120" fill="none" stroke="#2b2650" stroke-width="1.5"/>
+        <ellipse cx="160" cy="160" rx="120" ry="42" fill="none" stroke="#8b6bff" stroke-width="1.4" opacity=".55"/>
+        <ellipse id="ringA" cx="160" cy="160" rx="120" ry="42" fill="none" stroke="#ffb454" stroke-width="1.4" opacity=".7" transform="rotate(60 160 160)"/>
+        <ellipse id="ringB" cx="160" cy="160" rx="120" ry="42" fill="none" stroke="#8b6bff" stroke-width="1.4" opacity=".4" transform="rotate(120 160 160)"/>
+        <line x1="160" y1="30" x2="160" y2="290" stroke="#463f78" stroke-width="1" stroke-dasharray="3 4"/>
+        <text x="160" y="22" text-anchor="middle" fill="#a79fc9" font-family="IBM Plex Mono" font-size="12">|0⟩</text>
+        <text x="160" y="306" text-anchor="middle" fill="#a79fc9" font-family="IBM Plex Mono" font-size="12">|1⟩</text>
+        <line id="stateVec" x1="160" y1="160" x2="160" y2="60" stroke="#ffb454" stroke-width="2"/>
+        <circle id="stateDot" cx="160" cy="60" r="5" fill="#ffb454"/>
+        <circle cx="160" cy="160" r="2.5" fill="#f2eefc"/>
+      </svg>
+      <div class="qubit-caption mono">move your cursor — <b>state vector</b> tracks a live qubit on the Bloch sphere</div>
+    </div>
+  </section>
 
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            resizeCanvas();
+  <!-- ABOUT -->
+  <section id="about" class="wrap fade">
+    <div class="eyebrow">About</div>
+    <h2 class="sectitle">Where AI meets quantum</h2>
+    <div class="about-grid">
+      <div>
+        <p>I'm a Computer Science graduate <strong>(Class of 2026, CGPA: Very Good)</strong> from Ain Shams University, specializing in <strong>Artificial Intelligence, Machine Learning, and Data Engineering</strong>, with a solid academic foundation in <strong>Quantum Computing</strong> using Qiskit and Pennylane.</p>
+        <p>Day to day, I build end-to-end Generative AI applications — RAG systems, AI agents, and production ML pipelines — with Python, FastAPI, LangChain, and vector databases. I've interned in AI at <strong>ITI</strong> and in data engineering at <strong>Ejada</strong>, and I currently teach programming and AI concepts as a tutor with <strong>iSchool</strong>, in collaboration with Egypt's Ministry of Communications and Information Technology.</p>
+        <p>Outside of building, I write about AI and quantum computing and publish on LinkedIn — breaking down the ideas I'm implementing into something readable.</p>
+        <div class="skill-chip-row">
+          <span class="chip">Python · FastAPI · LangChain</span>
+          <span class="chip">PyTorch · TensorFlow · Scikit-learn</span>
+          <span class="chip">Qiskit · Pennylane</span>
+          <span class="chip">ChromaDB · FAISS · SBERT</span>
+          <span class="chip">Docker · Git · Power BI</span>
+        </div>
+      </div>
+      <div>
+        <div class="stat-card">
+          <div class="stat-num">5</div>
+          <div class="stat-label">Machine learning &amp; hackathon awards</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">6</div>
+          <div class="stat-label">Shipped AI / data engineering projects</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">2+ yrs</div>
+          <div class="stat-label">Teaching AI &amp; programming</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-            class Particle {
-                constructor() {
-                    this.x = Math.random() * canvas.width;
-                    this.y = Math.random() * canvas.height;
-                    this.size = Math.random() * 1.5 + 1;
-                    this.speedX = Math.random() * 1 - 0.5;
-                    this.speedY = Math.random() * 1 - 0.5;
-                }
-                update() {
-                    this.x += this.speedX;
-                    this.y += this.speedY;
+  <!-- EXPERIENCE -->
+  <section id="experience" class="wrap fade">
+    <div class="eyebrow">Experience</div>
+    <h2 class="sectitle">The circuit so far</h2>
+    <div class="circuit">
+      <div class="gate">
+        <div class="gate-node" style="border-color:var(--amber);"></div>
+        <div class="gate-card">
+          <div class="gate-head">
+            <span class="gate-role">Programming Tutor <span class="gate-org">· iSchool (with MCIT, Egypt)</span></span>
+            <span class="gate-time">Jul 2026</span>
+          </div>
+          <p>Deliver programming and AI courses to school students through project-based, interactive learning — teaching Python, problem-solving, and introductory AI concepts across age groups, in partnership with Egypt's Ministry of Communications and Information Technology.</p>
+        </div>
+      </div>
+      <div class="gate">
+        <div class="gate-node"></div>
+        <div class="gate-card">
+          <div class="gate-head">
+            <span class="gate-role">Data Engineering Intern <span class="gate-org">· Ejada</span></span>
+            <span class="gate-time">Jul – Aug 2025</span>
+          </div>
+          <p>Built and optimized ETL pipelines for banking analytics using Oracle SQL and Informatica PowerCenter across 13 relational tables covering transactions, loans, investments, and foreign transfers. Designed Joiner, Aggregator, and Lookup mappings, and delivered scalable financial reports with caching-optimized performance.</p>
+        </div>
+      </div>
+      <div class="gate">
+        <div class="gate-node"></div>
+        <div class="gate-card">
+          <div class="gate-head">
+            <span class="gate-role">Machine Learning Instructor <span class="gate-org">· SupportASU</span></span>
+            <span class="gate-time">Oct 2024 – Oct 2025</span>
+          </div>
+          <p>Delivered structured ML sessions on regression, classification, and model evaluation to university students, guiding them through applying algorithms with Python and Scikit-learn on real datasets.</p>
+        </div>
+      </div>
+      <div class="gate">
+        <div class="gate-node"></div>
+        <div class="gate-card">
+          <div class="gate-head">
+            <span class="gate-role">Artificial Intelligence Intern <span class="gate-org">· ITI</span></span>
+            <span class="gate-time">Jul – Aug 2024</span>
+          </div>
+          <p>Completed intensive training in Machine Learning, Neural Networks, and Deep Learning fundamentals. Applied supervised and unsupervised models to real-world datasets with Scikit-learn and TensorFlow, version-controlled in an Agile, Git-based workflow.</p>
+        </div>
+      </div>
+      <div class="gate">
+        <div class="gate-node"></div>
+        <div class="gate-card">
+          <div class="gate-head">
+            <span class="gate-role">AI-Driven IoT Instructor <span class="gate-org">· RoboTech Club, Ain Shams University</span></span>
+            <span class="gate-time">Oct 2023 – May 2024</span>
+          </div>
+          <p>Taught AI and machine learning fundamentals and led hands-on projects integrating AI models with IoT devices, building teamwork and practical problem-solving skills in fellow students.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-                    if (this.size > 0.2) this.size -= 0.01;
-                    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-                    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-                }
-                draw() {
-                    ctx.fillStyle = '#64ffda';
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
+  <!-- PROJECTS -->
+  <section id="projects" class="wrap fade">
+    <div class="eyebrow">Projects</div>
+    <h2 class="sectitle">Things I've built</h2>
+    <div class="filters" id="filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="genai">GenAI &amp; RAG</button>
+      <button class="filter-btn" data-filter="cv">Computer Vision</button>
+      <button class="filter-btn" data-filter="data">Data Engineering</button>
+      <button class="filter-btn" data-filter="ml">Classical ML</button>
+    </div>
+    <div class="proj-grid" id="projGrid"><!-- injected by JS --></div>
+  </section>
 
-            function initParticles() {
-                const particleCount = Math.floor(canvas.width / 20);
-                for (let i = 0; i < particleCount; i++) {
-                    particles.push(new Particle());
-                }
-            }
-            initParticles();
+  <!-- QUANTUM -->
+  <section id="quantum" class="wrap fade">
+    <div class="eyebrow">Quantum Computing</div>
+    <h2 class="sectitle">Coursework in quantum algorithms</h2>
+    <p style="color:var(--ink-dim);max-width:70ch;margin:-20px 0 30px;">Alongside AI, I studied quantum computing with Qiskit and Pennylane, working through the algorithms that define the field's early speedups over classical computation:</p>
+    <div class="qalgo-grid">
+      <div class="qalgo"><div class="qname mono">Deutsch</div><p>The first proof that a quantum circuit can answer a question in fewer queries than any classical algorithm.</p></div>
+      <div class="qalgo"><div class="qname mono">Deutsch–Jozsa</div><p>Generalizes Deutsch's idea to decide constant vs. balanced functions in a single query.</p></div>
+      <div class="qalgo"><div class="qname mono">Simon's</div><p>Finds a hidden bitwise period exponentially faster than any classical approach — a direct precursor to Shor's.</p></div>
+      <div class="qalgo"><div class="qname mono">Grover's</div><p>Searches an unsorted space of N items in roughly √N steps via amplitude amplification.</p></div>
+      <div class="qalgo"><div class="qname mono">Shor's</div><p>Factors large integers in polynomial time — the algorithm behind quantum computing's threat to RSA encryption.</p></div>
+    </div>
+    <div class="qtools">
+      <span class="chip">Qiskit</span>
+      <span class="chip">Pennylane</span>
+      <span class="chip">Quantum Algorithms</span>
+    </div>
+  </section>
 
-            function handleParticles() {
-                for (let i = 0; i < particles.length; i++) {
-                    particles[i].update();
-                    particles[i].draw();
-                }
-            }
+  <!-- AWARDS -->
+  <section id="awards" class="wrap fade">
+    <div class="eyebrow">Awards &amp; Achievements</div>
+    <h2 class="sectitle">Recognition</h2>
+    <div class="awards-list">
+      <div class="award"><span class="medal">🏆 2nd — 2025</span><p><strong>Computer Vision Competition</strong>, Faculty of Computer &amp; Information Sciences, ASU — most accurate Food-Fruit Recognition &amp; Calorie Estimation model.</p></div>
+      <div class="award"><span class="medal">🏆 2nd — 2025</span><p><strong>Machine Learning Competition</strong>, Faculty of Computer &amp; Information Sciences, ASU — most accurate Guest Satisfaction Prediction model.</p></div>
+      <div class="award"><span class="medal">🏆 1st — 2024</span><p><strong>Front-End Competition</strong> — "Planto" project, recognized for Best UI/UX Design and functionality.</p></div>
+      <div class="award"><span class="medal">🏆 2nd — 2023</span><p><strong>IoT Competition</strong> — "Squid Game Robot," recognized for hardware-software integration and logic design.</p></div>
+      <div class="award"><span class="medal">🏆 3rd — 2023</span><p><strong>Beyond Earth Hackathon</strong> — Forest Fire detection, integrating AI, IoT, and satellite tech.</p></div>
+    </div>
+  </section>
 
-            function animateParticles() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                handleParticles();
-                requestAnimationFrame(animateParticles);
-            }
-            animateParticles();
+  <!-- WRITING -->
+  <section id="writing" class="wrap fade">
+    <div class="eyebrow">Writing</div>
+    <h2 class="sectitle">Notes on AI &amp; quantum computing</h2>
+    <div class="writing-card">
+      <div>
+        <h3 style="margin:0 0 8px;">I publish on LinkedIn</h3>
+        <p>I write about what I'm building and learning in AI and quantum computing — breaking down papers, algorithms, and real project decisions into plain-language posts.</p>
+      </div>
+      <a class="btn btn-solid" href="https://www.linkedin.com/in/rana-nasser-7b2375291" target="_blank" rel="noopener">Read on LinkedIn →</a>
+    </div>
+  </section>
 
-            window.addEventListener('resize', () => {
-                resizeCanvas();
-                particles = [];
-                initParticles();
-            });
+  <!-- CONTACT -->
+  <section id="contact" class="wrap fade">
+    <div class="eyebrow" style="justify-content:center;">Get in touch</div>
+    <h2>Let's build something</h2>
+    <p class="lede">I'm graduating in 2026 and looking for roles in AI engineering, applied ML, or data engineering. My inbox is open.</p>
+    <div class="contact-actions">
+      <a class="btn btn-solid" href="mailto:rananasser760@gmail.com">Email me</a>
+      <a class="btn btn-ghost" href="https://drive.google.com/drive/folders/1YpGfEurCAtLz8HPERlMMg8zzecEAFnj9" target="_blank" rel="noopener">Download CV</a>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-item"><span id="emailText">rananasser760@gmail.com</span><button class="copy-btn" data-copy="rananasser760@gmail.com">copy</button></div>
+      <div class="contact-item"><span>01225833467</span><button class="copy-btn" data-copy="01225833467">copy</button></div>
+      <div class="contact-item"><a href="https://www.linkedin.com/in/rana-nasser-7b2375291" target="_blank" rel="noopener">linkedin.com/in/rana-nasser</a></div>
+      <div class="contact-item"><a href="https://github.com/rananasser760" target="_blank" rel="noopener">github.com/rananasser760</a></div>
+    </div>
+  </section>
 
-            const typingSubtitle = document.getElementById('typing-subtitle');
-            const phrases = [
-                "I love solving complex problems."
-            ];
-            let phraseIndex = 0;
-            let charIndex = 0;
-            let isDeleting = false;
+</main>
 
-            function type() {
-                const currentPhrase = phrases[phraseIndex];
-                const speed = isDeleting ? 75 : 150;
+<footer>
+  <div class="footer-social">
+    <a href="https://www.linkedin.com/in/rana-nasser-7b2375291" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+    </a>
+    <a href="https://github.com/rananasser760" target="_blank" rel="noopener" aria-label="GitHub">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+    </a>
+  </div>
+  Designed &amp; built by Rana Nasser Mohamed · Cairo, Egypt
+</footer>
 
-                typingSubtitle.innerHTML = `${currentPhrase.substring(0, charIndex)}<span class="typing-cursor"></span>`;
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modalTitle">Project</h3>
+      <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
 
-                if (!isDeleting && charIndex < currentPhrase.length) {
-                    charIndex++;
-                } else if (isDeleting && charIndex > 0) {
-                    charIndex--;
-                } else {
-                    isDeleting = !isDeleting;
-                    if (!isDeleting) {
-                        phraseIndex = (phraseIndex + 1) % phrases.length;
-                    }
-                }
+<div class="toast" id="toast">copied</div>
 
-                const delay = isDeleting ? speed : (charIndex === currentPhrase.length ? 2000 : speed);
-                setTimeout(type, delay);
-            }
-            type();
+<script>
+// ---------- project data ----------
+const projects = [
+  {
+    id:"joblens", featured:true, tags:["genai","cv","data"],
+    badge:"Graduation Project", title:"JobLens — AI-Powered Recruitment Integrity Platform",
+    desc:"An end-to-end AI recruitment platform tackling the 60% irrelevant-application rate and 23-hour average recruiter screening time — from ATS scoring to a proctored AI interview.",
+    stack:["Python","FastAPI","Angular","Llama 3.3-70B","SBERT","YOLOv8","MediaPipe","Playwright","ChromaDB","PostgreSQL","Docker"],
+    points:[
+      "CV Analysis: dual-mode parsing with PyMuPDF + Docling, structured JSON extraction via Llama 3.3-70B, and LLM-driven ATS scoring across 7 criteria.",
+      "Job Matching: SBERT (all-mpnet-base-v2) weighted semantic matching across 6 components — Skills 30%, Job Title 25%, Experience 25%, Summary 10%, Projects 5%, Certifications 5% — via FastAPI + ChromaDB.",
+      "Web Scraper: 1,734 unique listings harvested from Wuzzuf and LinkedIn via Playwright headless Chromium, with anti-bot stealth, MD5 deduplication, and 48-hour auto-rescrape.",
+      "Cheating Detection: real-time proctoring combining MediaPipe Face Mesh gaze/head-pose tracking (~87–91% accuracy) and YOLOv8 phone/multi-person detection (0.98 precision, 0.99 mAP50).",
+      "AI Interview Agent: NVIDIA Parakeet v2 STT (WER 0.0189), Mistral Small 3.2 LLM, and Coqui TTS — ~95% turn-taking accuracy at 4.6–5.6s end-to-end latency."
+    ]
+  },
+  {
+    id:"support", tags:["genai"],
+    badge:"GenAI Product", title:"AI Customer Support Platform",
+    desc:"An end-to-end GenAI customer support platform with a real-time voice agent, RAG-based knowledge retrieval, and quantized LLM inference.",
+    stack:["Python","LangChain","RAG","FAISS","LiveKit Agents","FastAPI","Docker"],
+    points:[
+      "Real-time voice assistant built on LiveKit Agents with STT/LLM/TTS pipelines and tool-calling workflows.",
+      "RAG pipeline via LangChain + FAISS with document retrieval, citations, and hallucination prevention.",
+      "Deployed with FastAPI + Docker; INT4/GGUF quantization vs. FP16 cut memory use by ~60% with comparable response quality."
+    ]
+  },
+  {
+    id:"eeg", tags:["cv","ml"],
+    badge:"AIC Competition · MCIT", title:"AI-Based EEG Signal Classification",
+    desc:"CNN models classifying Motor Imagery and SSVEP EEG signals for Brain-Computer Interface applications, on noisy real-world biosignal data.",
+    stack:["Python","PyTorch","CNN","Signal Processing"],
+    points:[
+      "Submitted to the AIC Competition run by Egypt's Ministry of Communications and Information Technology.",
+      "Built EEG preprocessing pipelines for noisy, real-world biosignal datasets.",
+      "Achieved 70% classification accuracy on real-time signal classification."
+    ]
+  },
+  {
+    id:"food", tags:["cv","ml"],
+    badge:"🏆 2nd Place", title:"Food &amp; Fruit Recognition with Calorie Estimation",
+    desc:"A food analysis pipeline combining classification, few-shot learning, and semantic segmentation for calorie estimation.",
+    stack:["Python","PyTorch","CLIP","ResNet","U-Net"],
+    points:[
+      "Transfer &amp; metric learning via CLIP and Siamese Networks alongside ResNet, EfficientNet, MobileNetV2, U-Net, and DeepLabV3.",
+      "99% accuracy in food-vs-fruit classification, 97% in Siamese few-shot recognition, 98% segmentation accuracy.",
+      "Awarded 2nd place, Computer Vision Competition, Faculty of Computer &amp; Information Sciences, ASU."
+    ]
+  },
+  {
+    id:"guest", tags:["ml"],
+    badge:"🏆 2nd Place", title:"Guest Satisfaction Prediction System",
+    desc:"Regression and classification models predicting Airbnb guest satisfaction from structured data and review text.",
+    stack:["Python","Scikit-learn","TensorFlow","NLTK","SMOTE"],
+    points:[
+      "NLTK sentiment analysis on review text combined with feature engineering and SMOTE class balancing.",
+      "Achieved 80% accuracy.",
+      "Awarded 2nd place, Machine Learning Competition, Faculty of Computer &amp; Information Sciences, ASU."
+    ]
+  },
+  {
+    id:"bank", tags:["data"],
+    badge:"Ejada Internship", title:"Banking Analytics ETL System",
+    desc:"Comprehensive ETL pipelines processing banking data across 13 tables — transactions, loans, investments, foreign transfers.",
+    stack:["Oracle SQL","Informatica PowerCenter","Data Warehousing"],
+    points:[
+      "Complex Informatica mappings with Joiner, Aggregator, and Lookup components.",
+      "Caching strategies applied for scalable performance.",
+      "Delivered accurate financial analytics reports as the Ejada internship graduation deliverable."
+    ]
+  },
+];
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                    }
-                });
-            }, { threshold: 0.1 });
+const grid = document.getElementById('projGrid');
+function renderProjects(filter){
+  grid.innerHTML = projects
+    .filter(p => filter === 'all' || p.tags.includes(filter))
+    .map(p => `
+      <div class="proj-card ${p.featured ? 'featured' : ''}" data-id="${p.id}" role="button" tabindex="0" aria-label="View details for ${p.title}">
+        <div class="proj-top"><span class="proj-badge mono">${p.badge}</span></div>
+        <h3>${p.title}</h3>
+        <p class="desc">${p.desc}</p>
+        <div class="proj-tags">${p.stack.slice(0,4).map(s=>`<span class="tag">${s}</span>`).join('')}${p.stack.length>4 ? `<span class="tag">+${p.stack.length-4}</span>`:''}</div>
+        <div class="proj-more mono">View details →</div>
+      </div>
+    `).join('');
+}
+renderProjects('all');
 
-            document.querySelectorAll('.fade-in-section').forEach(section => {
-                observer.observe(section);
-            });
+document.getElementById('filters').addEventListener('click', e=>{
+  const btn = e.target.closest('.filter-btn');
+  if(!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProjects(btn.dataset.filter);
+});
 
-            // --- Gemini API Helper ---
-            const callGeminiApi = async (prompt) => {
-                // IMPORTANT: To run this locally, you need your own Google AI API key.
-                // 1. Get your key from Google AI Studio: https://aistudio.google.com/app/apikey
-                // 2. Paste your key into the quotes below.
-                // 3. To avoid CORS errors, run this file with a local server (like VS Code's "Live Server" extension).
-                const apiKey = ""; // <-- PASTE YOUR API KEY HERE
+// modal
+const backdrop = document.getElementById('modalBackdrop');
+const modalTitle = document.getElementById('modalTitle');
+const modalBody = document.getElementById('modalBody');
+function openModal(id){
+  const p = projects.find(x=>x.id===id);
+  if(!p) return;
+  modalTitle.innerHTML = p.title;
+  modalBody.innerHTML = `
+    <p>${p.desc}</p>
+    <ul>${p.points.map(pt=>`<li>${pt}</li>`).join('')}</ul>
+    <div>${p.stack.map(s=>`<span class="tag">${s}</span>`).join('')}</div>
+  `;
+  backdrop.classList.add('open');
+}
+grid.addEventListener('click', e=>{
+  const card = e.target.closest('.proj-card');
+  if(card) openModal(card.dataset.id);
+});
+grid.addEventListener('keydown', e=>{
+  if(e.key === 'Enter' || e.key === ' '){
+    const card = e.target.closest('.proj-card');
+    if(card){ e.preventDefault(); openModal(card.dataset.id); }
+  }
+});
+document.getElementById('modalClose').addEventListener('click', ()=>backdrop.classList.remove('open'));
+backdrop.addEventListener('click', e=>{ if(e.target===backdrop) backdrop.classList.remove('open'); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') backdrop.classList.remove('open'); });
 
-                if (!apiKey) {
-                    return "API Key is missing. Please add your Google AI API key to the script in portfolio.html to use this feature.";
-                }
+// mobile menu
+const menuBtn = document.getElementById('menuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+menuBtn.addEventListener('click', ()=>{
+  mobileMenu.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', mobileMenu.classList.contains('open'));
+});
+mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mobileMenu.classList.remove('open')));
 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+// scrollspy
+const sections = document.querySelectorAll('main section[id]');
+const navA = document.querySelectorAll('.navlinks a');
+const spy = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      navA.forEach(a=>a.classList.toggle('active', a.getAttribute('href') === '#'+entry.target.id));
+    }
+  });
+},{rootMargin:'-40% 0px -55% 0px'});
+sections.forEach(s=>spy.observe(s));
 
-                const payload = {
-                    contents: [{ parts: [{ text: prompt }] }],
-                };
+// fade-in on scroll
+const fadeObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:.12});
+document.querySelectorAll('.fade').forEach(el=>fadeObs.observe(el));
 
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
+// typed role
+const roleText = "AI Engineer · AI & Quantum Computing Researcher · Data Engineer";
+const roleEl = document.getElementById('typedRole');
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(reduced){
+  roleEl.textContent = roleText;
+} else {
+  let i = 0;
+  function typeRole(){
+    roleEl.innerHTML = roleText.slice(0,i) + '<span class="cursor"></span>';
+    if(i < roleText.length){ i++; setTimeout(typeRole, 38); }
+  }
+  typeRole();
+}
 
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        console.error("API Error Response:", errorData);
-                        throw new Error(`API call failed with status: ${response.status}. Check console for details.`);
-                    }
+// qubit bloch-sphere interaction
+const qubitStage = document.querySelector('.qubit-stage');
+const stateVec = document.getElementById('stateVec');
+const stateDot = document.getElementById('stateDot');
+const ringA = document.getElementById('ringA');
+const ringB = document.getElementById('ringB');
+let theta = 60; // angle from |0> pole, degrees
+function setState(t){
+  theta = Math.max(4, Math.min(176, t));
+  const rad = theta * Math.PI/180;
+  const cx=160, cy=160, r=100;
+  const x = cx + r*Math.sin(rad);
+  const y = cy - r*Math.cos(rad);
+  stateVec.setAttribute('x2', x);
+  stateVec.setAttribute('y2', y);
+  stateDot.setAttribute('cx', x);
+  stateDot.setAttribute('cy', y);
+}
+setState(60);
+if(!reduced){
+  qubitStage.addEventListener('mousemove', e=>{
+    const rect = qubitStage.getBoundingClientRect();
+    const relY = (e.clientY - rect.top) / rect.height; // 0..1
+    setState(relY * 180);
+  });
+  qubitStage.addEventListener('mouseleave', ()=> setState(60));
+  let rot = 0;
+  function spin(){
+    rot += 0.15;
+    ringA.setAttribute('transform', `rotate(${60+rot} 160 160)`);
+    ringB.setAttribute('transform', `rotate(${120-rot} 160 160)`);
+    requestAnimationFrame(spin);
+  }
+  spin();
+}
 
-                    const result = await response.json();
-                    const candidate = result.candidates?.[0];
+// background particle field
+const canvas = document.getElementById('field');
+const ctx = canvas.getContext('2d');
+let particles = [];
+function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+resize();
+window.addEventListener('resize', ()=>{ resize(); initParticles(); });
+function initParticles(){
+  particles = [];
+  const count = reduced ? 0 : Math.min(80, Math.floor(innerWidth/22));
+  for(let i=0;i<count;i++){
+    particles.push({
+      x:Math.random()*canvas.width, y:Math.random()*canvas.height,
+      r:Math.random()*1.4+0.6, vx:(Math.random()-0.5)*.25, vy:(Math.random()-0.5)*.25,
+      c: Math.random() > 0.5 ? '139,107,255' : '255,180,84'
+    });
+  }
+}
+initParticles();
+function tick(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    p.x += p.vx; p.y += p.vy;
+    if(p.x<0||p.x>canvas.width) p.vx*=-1;
+    if(p.y<0||p.y>canvas.height) p.vy*=-1;
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(${p.c},.55)`;
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+  });
+  requestAnimationFrame(tick);
+}
+tick();
 
-                    if (candidate && candidate.content?.parts?.[0]?.text) {
-                        return candidate.content.parts[0].text;
-                    } else {
-                        console.warn("Model response was empty or malformed:", result);
-                        return "Sorry, I couldn't generate a response. The model's output was empty.";
-                    }
-                } catch (error) {
-                    console.error("Gemini API call error:", error);
-                    return "An error occurred while contacting the AI. This can happen due to a missing/invalid API key or a network issue. Please check the browser console for details.";
-                }
-            };
-
-            const showLoader = (element) => {
-                element.innerHTML = '<div class="flex justify-center items-center h-full"><div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-600 h-12 w-12"></div></div>';
-            };
-
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-            document.querySelectorAll('#mobile-menu a').forEach(link => {
-                link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-            });
-
-            const aiModal = document.getElementById('ai-modal');
-            const modalTitle = document.getElementById('modal-title');
-            const modalBody = document.getElementById('modal-body');
-            const closeModalBtn = document.getElementById('close-modal-btn');
-
-            document.querySelectorAll('.explain-project-btn').forEach(button => {
-                button.addEventListener('click', async (e) => {
-                    const title = e.target.dataset.title;
-                    const description = e.target.dataset.description;
-
-                    modalTitle.innerText = `AI Insight: ${title}`;
-                    modalBody.innerHTML = '';
-                    showLoader(modalBody);
-                    aiModal.classList.remove('hidden');
-
-                    const prompt = `As a senior technical recruiter reviewing a portfolio, analyze the following project. In 2-3 short paragraphs, explain its technical significance, the key challenges that were likely overcome, and what skills this demonstrates to a potential employer. Be encouraging and professional.
-                    
-                    Project Title: "${title}"
-                    Project Description: "${description}"`;
-
-                    const response = await callGeminiApi(prompt);
-                    modalBody.innerHTML = `<p class="whitespace-pre-wrap light-slate">${response}</p>`;
-                });
-            });
-
-            closeModalBtn.addEventListener('click', () => aiModal.classList.add('hidden'));
-            aiModal.addEventListener('click', (e) => {
-                if (e.target === aiModal) {
-                    aiModal.classList.add('hidden');
-                }
-            });
-
-            const generateSnippetBtn = document.getElementById('generate-snippet-btn');
-            const jobTitleInput = document.getElementById('job-title-input');
-            const snippetOutput = document.getElementById('snippet-output');
-            const snippetContent = document.getElementById('snippet-content');
-
-            generateSnippetBtn.addEventListener('click', async () => {
-                const jobTitle = jobTitleInput.value.trim();
-                if (!jobTitle) {
-                    snippetContent.innerText = "Please enter a job title first.";
-                    snippetOutput.style.display = 'block';
-                    return;
-                }
-
-                snippetOutput.style.display = 'block';
-                showLoader(snippetContent);
-
-                const prompt = `My name is Rana Nasser Mohamed, a Computer Science student with the following skills and experience:
-                - Skills: Python, C++, Java, SQL, TensorFlow, Scikit-learn, NLP, ETL Pipelines, Informatica PowerCenter.
-                - Experience: Internships in AI and Data Engineering, experience as an ML/AI instructor.
-                - Key Projects: AI-based EEG signal classification, banking analytics system, guest satisfaction prediction, forest fire detection.
-                
-                Based on this information, write a concise and compelling 2-paragraph cover letter snippet for the position of a "${jobTitle}". The snippet should directly connect my skills and project experience to the requirements of such a role. Start directly with the main content.`;
-
-                const response = await callGeminiApi(prompt);
-                snippetContent.innerText = response;
-            });
-        });
-    </script>
+// copy buttons
+const toast = document.getElementById('toast');
+let toastTimer;
+document.querySelectorAll('.copy-btn').forEach(btn=>{
+  btn.addEventListener('click', async ()=>{
+    try{
+      await navigator.clipboard.writeText(btn.dataset.copy);
+      toast.textContent = 'copied to clipboard';
+    }catch(err){
+      toast.textContent = btn.dataset.copy;
+    }
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>toast.classList.remove('show'), 1600);
+  });
+});
+</script>
 </body>
-
-
 </html>
