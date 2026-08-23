@@ -10,95 +10,69 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Clean & Modern -->
-    <!-- Application Structure Plan: The application is structured as an interactive dashboard with four main, non-linear sections: Overview, Skills Deep Dive, Project Portfolio, and Career Timeline. This architecture was chosen over the resume's linear format to empower user-driven exploration. A recruiter, for example, can immediately navigate to the 'Projects' section and filter by a specific technology like 'ETL' without needing to read through the entire document. The interactive nature of each section, such as skill-based filtering and a hover-able timeline, is designed to reveal deeper connections between skills, roles, and projects, providing a more holistic and insightful view of the candidate's capabilities. -->
-    <!-- Visualization & Content Choices: 
-        - Resume Skills List -> Goal: Compare proficiency -> Viz/Presentation Method: Radar Chart -> Interaction: Tooltips on hover -> Justification: Provides an immediate, high-level summary of core competencies. -> Library/Method: Chart.js/Canvas.
-        - Full Skill List -> Goal: Organize & Explore -> Viz/Presentation Method: Interactive Buttons + Dynamic Text Area -> Interaction: Clicking a skill category button filters the displayed skills and highlights related projects. -> Justification: Allows users to drill down into specific areas of expertise and see their practical application. -> Library/Method: Vanilla JS DOM manipulation.
-        - Project List -> Goal: Compare & Organize -> Viz/Presentation Method: Filterable Grid of Project Cards -> Interaction: Users can filter projects by technology or by 'Award Winner' status. -> Justification: Enables targeted discovery of the most relevant work based on user interest. -> Library/Method: Vanilla JS DOM manipulation.
-        - Experience & Education -> Goal: Show Change -> Viz/Presentation Method: Vertical Interactive Timeline -> Interaction: Hovering over timeline events reveals more details. -> Justification: Presents career progression in a more visually engaging and digestible format than a static list. -> Library/Method: HTML/CSS with Tailwind + Vanilla JS.
-        - Key Stats (Awards, Projects) -> Goal: Inform -> Viz/Presentation Method: Large number callouts -> Interaction: Static display -> Justification: Highlights key achievements immediately upon loading the page. -> Library/Method: HTML/CSS with Tailwind.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
+        :root{
+            --bg:#F5F7FA;
+            --card:#FFFFFF;
+            --border:#E1E8ED;
+            --text:#657786;
+            --heading:#1a202c;
+            --muted:#AAB8C2;
+            --accent:#657786;
+            --accent-rgb:101,119,134;
+            --tag-bg:#E1E8ED;
+            --tag-text:#657786;
+            --award:#b45309;
+            --btn-active-text:#FFFFFF;
+        }
+        [data-theme="dark"]{
+            --bg:#0d1320;
+            --card:#141b2c;
+            --border:#232c40;
+            --text:#a7b2c8;
+            --heading:#f2f5fa;
+            --muted:#5c6a85;
+            --accent:#8fa8e0;
+            --accent-rgb:143,168,224;
+            --tag-bg:#1c2438;
+            --tag-text:#a9b8db;
+            --award:#f2b155;
+            --btn-active-text:#0d1320;
+        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F5F7FA;
-            color: #657786;
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background-color .35s ease, color .35s ease;
         }
-
-        .card {
-            background-color: #FFFFFF;
-            border: 1px solid #E1E8ED;
-        }
-
-        .nav-active {
-            color: #1a202c;
-            font-weight: 600;
-            border-bottom: 2px solid #657786;
-        }
-
-        .nav-link {
-            color: #AAB8C2;
-            font-weight: 500;
-            transition: color 0.3s ease;
-            border-bottom: 2px solid transparent;
-        }
-
-        .nav-link:hover {
-            color: #657786;
-        }
-
-        .skill-btn {
-            background-color: #FFFFFF;
-            border: 1px solid #E1E8ED;
-            color: #657786;
-            transition: all 0.3s ease;
-        }
-
-        .skill-btn.active,
-        .skill-btn:hover {
-            background-color: #657786;
-            color: #FFFFFF;
-            border-color: #657786;
-        }
-
-        .project-tag {
-            background-color: #E1E8ED;
-            color: #657786;
-        }
-
+        .card { background-color: var(--card); border: 1px solid var(--border); transition: background-color .35s ease, border-color .35s ease; }
+        .nav-active { color: var(--heading); font-weight: 600; border-bottom: 2px solid var(--accent); }
+        .nav-link { color: var(--muted); font-weight: 500; transition: color 0.3s ease; border-bottom: 2px solid transparent; }
+        .nav-link:hover { color: var(--text); }
+        .skill-btn { background-color: var(--card); border: 1px solid var(--border); color: var(--text); transition: all 0.25s ease; }
+        .skill-btn.active, .skill-btn:hover { background-color: var(--accent); color: var(--btn-active-text); border-color: var(--accent); }
+        .project-tag { background-color: var(--tag-bg); color: var(--tag-text); transition: background-color .3s, color .3s; }
         .timeline-item::before {
-            content: '';
-            position: absolute;
-            top: 12px;
-            left: -21px;
-            width: 10px;
-            height: 10px;
-            background-color: #AAB8C2;
-            border-radius: 50%;
-            border: 2px solid #F5F7FA;
+            content: ''; position: absolute; top: 12px; left: -21px; width: 10px; height: 10px;
+            background-color: var(--muted); border-radius: 50%; border: 2px solid var(--bg); transition: background-color .3s, border-color .3s;
         }
+        .timeline-item:hover::before { background-color: var(--accent); }
+        #career-timeline-container{ border-color: var(--border); transition: border-color .3s; }
+        .chart-container { position: relative; width: 100%; max-width: 500px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+        .project-card-award{ color: var(--award); }
 
-        .timeline-item:hover::before {
-            background-color: #657786;
+        .theme-toggle{
+            display:flex; align-items:center; justify-content:center;
+            width:42px; height:42px; border-radius:999px; border:1px solid var(--border);
+            background: var(--card); color: var(--text); cursor:pointer; transition: all .25s ease;
         }
-
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 350px;
-            max-height: 400px;
-        }
-
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 400px;
-            }
-        }
+        .theme-toggle:hover{ border-color: var(--accent); color: var(--heading); }
+        .theme-toggle svg{ width:19px; height:19px; }
+        .fade-in{ opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease; }
+        .fade-in.in{ opacity:1; transform:translateY(0); }
+        aside{ transition: background-color .35s ease, border-color .35s ease; }
+        .card, aside { transition: background-color .35s ease, border-color .35s ease, color .35s ease; }
     </style>
 </head>
 
@@ -106,64 +80,72 @@
 
     <div class="flex flex-col lg:flex-row min-h-screen">
         <aside
-            class="w-full lg:w-1/4 xl:w-1/5 bg-white border-r border-gray-200 p-6 lg:p-8 flex flex-col fixed bottom-0 lg:sticky lg:top-0 h-auto lg:h-screen z-40">
-            <header class="mb-12 hidden lg:block">
-                <h1 class="text-2xl font-bold text-gray-800">Rana Nasser Mohamed</h1>
-                <p class="text-md text-gray-500">AI & Data Engineering</p>
-            </header>
+            class="w-full lg:w-1/4 xl:w-1/5 border-r p-6 lg:p-8 flex flex-col fixed bottom-0 lg:sticky lg:top-0 h-auto lg:h-screen z-40"
+            style="background-color:var(--card); border-color:var(--border);">
+            <div class="hidden lg:flex items-center justify-between mb-12">
+                <header>
+                    <h1 class="text-2xl font-bold" style="color:var(--heading);">Rana Nasser Mohamed</h1>
+                    <p class="text-md" style="color:var(--muted);">AI Engineer &amp; Quantum Computing Researcher</p>
+                </header>
+            </div>
+            <div class="hidden lg:flex justify-end mb-8">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle day/night theme" aria-pressed="false">
+                    <svg id="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    <svg id="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+                </button>
+            </div>
             <nav id="main-nav" class="flex lg:flex-col justify-around lg:justify-start lg:space-y-4 text-sm">
                 <a href="#overview" class="nav-link nav-active text-center lg:text-left py-2 px-3">Overview</a>
                 <a href="#skills" class="nav-link text-center lg:text-left py-2 px-3">Skills Deep Dive</a>
                 <a href="#projects" class="nav-link text-center lg:text-left py-2 px-3">Project Portfolio</a>
                 <a href="#timeline" class="nav-link text-center lg:text-left py-2 px-3">Career Timeline</a>
+                <button id="theme-toggle-mobile" class="theme-toggle lg:hidden" aria-label="Toggle day/night theme">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
             </nav>
-            <div class="mt-auto hidden lg:block">
-                <p class="text-xs text-gray-400">&copy; 2025 Rana Nasser Mohamed</p>
+            <div class="mt-auto hidden lg:flex flex-col gap-2 pt-6" style="border-top:1px solid var(--border);">
+                <a href="mailto:rananasser760@gmail.com" class="text-xs" style="color:var(--muted);">rananasser760@gmail.com</a>
+                <a href="https://drive.google.com/drive/folders/1YpGfEurCAtLz8HPERlMMg8zzecEAFnj9" target="_blank" rel="noopener" class="text-xs font-semibold" style="color:var(--accent);">Download CV ↓</a>
+                <p class="text-xs mt-2" style="color:var(--muted);">&copy; 2026 Rana Nasser Mohamed</p>
             </div>
         </aside>
 
         <main class="w-full lg:w-3/4 xl:w-4/5 p-6 md:p-10 lg:p-12 pb-24 lg:pb-12">
             <section id="overview" class="min-h-screen">
-                <div class="text-center lg:text-left lg:hidden mb-8">
-                    <h1 class="text-3xl font-bold text-gray-800">Rana Nasser Mohamed</h1>
-                    <p class="text-lg text-gray-500">AI & Data Engineering</p>
+                <div class="flex items-start justify-between lg:hidden mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold" style="color:var(--heading);">Rana Nasser Mohamed</h1>
+                        <p class="text-lg" style="color:var(--muted);">AI Engineer &amp; Quantum Computing Researcher</p>
+                    </div>
                 </div>
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Dashboard Overview</h2>
-                <p class="text-lg text-gray-500 mb-8">A summary of my profile, highlighting key achievements and core
-                    competencies.</p>
+                <h2 class="text-3xl font-extrabold mb-2" style="color:var(--heading);">Dashboard Overview</h2>
+                <p class="text-lg mb-8" style="color:var(--muted);">A summary of my profile, highlighting key achievements and core competencies.</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     <div class="card p-6 rounded-xl shadow-sm text-center">
-                        <span class="text-5xl font-extrabold text-gray-800" id="project-count">0</span>
-                        <p class="text-gray-500 mt-2">Key Projects</p>
+                        <span class="text-5xl font-extrabold" style="color:var(--heading);" id="project-count">0</span>
+                        <p class="mt-2" style="color:var(--muted);">Key Projects</p>
                     </div>
                     <div class="card p-6 rounded-xl shadow-sm text-center">
-                        <span class="text-5xl font-extrabold text-gray-800" id="award-count">0</span>
-                        <p class="text-gray-500 mt-2">Competitive Awards</p>
+                        <span class="text-5xl font-extrabold" style="color:var(--heading);" id="award-count">0</span>
+                        <p class="mt-2" style="color:var(--muted);">Competitive Awards</p>
                     </div>
                     <div class="card p-6 rounded-xl shadow-sm text-center">
-                        <span class="text-5xl font-extrabold text-gray-800" id="experience-years">0+</span>
-                        <p class="text-gray-500 mt-2">Years of Experience</p>
+                        <span class="text-5xl font-extrabold" style="color:var(--heading);" id="experience-years">0+</span>
+                        <p class="mt-2" style="color:var(--muted);">Years of Experience</p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 xl:grid-cols-5 gap-8">
                     <div class="xl:col-span-3 card p-6 rounded-xl shadow-sm">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Professional Summary</h3>
-                        <div class="space-y-4 text-gray-600">
-                            <p>Enthusiastic Computer Science student at Ain Shams University with a strong, demonstrated
-                                interest in Artificial Intelligence, Data Engineering, and applied Physics. Seeking to
-                                leverage technical skills in data modeling, machine learning, and ETL pipeline
-                                development to contribute to innovative and impactful projects.</p>
-                            <p>My experience includes internships at the Information Technology Institute (ITI) and
-                                Ejada, where I gained hands-on experience with real-world datasets, enterprise data
-                                integration tools, and applying advanced AI models to solve practical problems. I am
-                                also a passionate educator, having served as an AI and ML instructor for student
-                                organizations.</p>
+                        <h3 class="text-xl font-bold mb-4" style="color:var(--heading);">Professional Summary</h3>
+                        <div class="space-y-4" style="color:var(--text);">
+                            <p>Computer Science graduate (Class of 2026, CGPA: Very Good) from Ain Shams University, specializing in Artificial Intelligence, Machine Learning, and Data Engineering. Experienced in building end-to-end Generative AI applications, RAG systems, and AI agents using Python, FastAPI, LangChain, and vector databases — with a solid academic foundation in Quantum Computing and Qiskit.</p>
+                            <p>My experience includes internships at the Information Technology Institute (ITI) and Ejada, where I gained hands-on experience with real-world datasets, enterprise data integration tools, and applying AI models to solve practical problems. I'm also a passionate educator — teaching programming and AI as a tutor with iSchool (in collaboration with Egypt's MCIT), and previously as an ML/AI instructor for student organizations.</p>
                         </div>
                     </div>
                     <div class="xl:col-span-2 card p-6 rounded-xl shadow-sm">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Core Competency Areas</h3>
+                        <h3 class="text-xl font-bold mb-4 text-center" style="color:var(--heading);">Core Competency Areas</h3>
                         <div class="chart-container">
                             <canvas id="skillsRadarChart"></canvas>
                         </div>
@@ -172,24 +154,21 @@
             </section>
 
             <section id="skills" class="min-h-screen pt-20">
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Skills Deep Dive</h2>
-                <p class="text-lg text-gray-500 mb-8">Select a category to explore the specific technologies I work with
-                    and see related projects.</p>
+                <h2 class="text-3xl font-extrabold mb-2" style="color:var(--heading);">Skills Deep Dive</h2>
+                <p class="text-lg mb-8" style="color:var(--muted);">Select a category to explore the specific technologies I work with and see related projects.</p>
 
-                <div id="skill-buttons" class="flex flex-wrap gap-3 mb-6">
-                </div>
+                <div id="skill-buttons" class="flex flex-wrap gap-3 mb-6"></div>
 
                 <div class="card p-6 rounded-xl shadow-sm">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <h3 class="text-xl font-bold text-gray-800 mb-4" id="skill-category-title"></h3>
-                            <ul id="skill-list" class="space-y-2">
-                            </ul>
+                            <h3 class="text-xl font-bold mb-4" id="skill-category-title" style="color:var(--heading);"></h3>
+                            <ul id="skill-list" class="space-y-2"></ul>
                         </div>
                         <div>
-                            <h3 class="text-xl font-bold text-gray-800 mb-4">Related Projects</h3>
+                            <h3 class="text-xl font-bold mb-4" style="color:var(--heading);">Related Projects</h3>
                             <div id="related-projects" class="space-y-3">
-                                <p class="text-gray-500">Select a skill category to see relevant projects.</p>
+                                <p style="color:var(--muted);">Select a skill category to see relevant projects.</p>
                             </div>
                         </div>
                     </div>
@@ -197,89 +176,158 @@
             </section>
 
             <section id="projects" class="min-h-screen pt-20">
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Project Portfolio</h2>
-                <p class="text-lg text-gray-500 mb-8">An interactive showcase of my work. Use the filters to find
-                    projects by technology.</p>
+                <h2 class="text-3xl font-extrabold mb-2" style="color:var(--heading);">Project Portfolio</h2>
+                <p class="text-lg mb-8" style="color:var(--muted);">An interactive showcase of my work. Use the filters to find projects by technology.</p>
 
-                <div id="project-filters" class="flex flex-wrap gap-3 mb-6">
-                </div>
+                <div id="project-filters" class="flex flex-wrap gap-3 mb-6"></div>
 
-                <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                </div>
+                <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
             </section>
 
             <section id="timeline" class="min-h-screen pt-20">
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Career Timeline</h2>
-                <p class="text-lg text-gray-500 mb-8">A chronological overview of my professional experience and
-                    academic journey.</p>
+                <h2 class="text-3xl font-extrabold mb-2" style="color:var(--heading);">Career Timeline</h2>
+                <p class="text-lg mb-8" style="color:var(--muted);">A chronological overview of my professional experience and academic journey.</p>
                 <div class="w-full max-w-3xl mx-auto">
-                    <div id="career-timeline-container" class="relative border-l-2 border-gray-200 pl-8 space-y-12">
-                    </div>
+                    <div id="career-timeline-container" class="relative border-l-2 pl-8 space-y-12"></div>
                 </div>
             </section>
 
         </main>
     </div>
 
-
-
-    
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+
+            // ---------- theme ----------
+            const root = document.documentElement;
+            const iconMoon = document.getElementById('theme-icon-moon');
+            const iconSun = document.getElementById('theme-icon-sun');
+            let radarChart = null;
+
+            function chartColorsFor(theme){
+                return theme === 'dark'
+                    ? { grid:'#232c40', point:'#a7b2c8', fill:'rgba(143,168,224,0.25)', border:'rgba(143,168,224,1)' }
+                    : { grid:'#E1E8ED', point:'#657786', fill:'rgba(101,119,134,0.2)', border:'rgba(101,119,134,1)' };
+            }
+
+            function applyTheme(theme){
+                root.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                iconMoon.style.display = theme === 'dark' ? 'none' : 'block';
+                iconSun.style.display = theme === 'dark' ? 'block' : 'none';
+                document.getElementById('theme-toggle').setAttribute('aria-pressed', theme === 'dark');
+                if (radarChart) {
+                    const c = chartColorsFor(theme);
+                    radarChart.options.scales.r.angleLines.color = c.grid;
+                    radarChart.options.scales.r.grid.color = c.grid;
+                    radarChart.options.scales.r.pointLabels.color = c.point;
+                    radarChart.data.datasets[0].backgroundColor = c.fill;
+                    radarChart.data.datasets[0].borderColor = c.border;
+                    radarChart.data.datasets[0].pointBackgroundColor = c.border;
+                    radarChart.update();
+                }
+            }
+
+            const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            applyTheme(savedTheme);
+
+            function toggleTheme(){
+                applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+            }
+            document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+            document.getElementById('theme-toggle-mobile').addEventListener('click', toggleTheme);
+
+            // ---------- data ----------
             const portfolioData = {
                 projects: [
-                    { title: "Comprehensive Banking Analytics System", date: "Aug 2025", type: "Internship", award: null, description: "Developed ETL pipelines using Oracle SQL & Informatica PowerCenter to analyze transactions, loans, and foreign transfers across 13 tables. Built complex SQL queries and mappings with Joiner, Aggregator, and Lookup.", technologies: ["Data Engineering", "ETL", "Oracle SQL", "Informatica"] },
-                    { title: "AI-Based EEG Signal Classification", date: "Jun 2025", type: "Competition", award: null, description: "Designed and trained CNN models to classify EEG signals (Motor Imagery and SSVEP). Worked with noisy biosignals and real EEG datasets to develop classification models with 70% accuracy.", technologies: ["AI/ML", "Python", "Deep Learning", "CNN", "BCI"] },
-                    { title: "Guest Satisfaction Prediction", date: "Jun 2025", type: "Project", award: "2nd Place, ML Competition ASU", description: "Built ML models (regression & classification) to predict Airbnb guest satisfaction. Applied feature engineering, sentiment analysis (NLTK), and SMOTE to achieve 80% accuracy.", technologies: ["AI/ML", "Python", "Scikit-learn", "TensorFlow", "NLP"] },
-                    { title: "Map Routing 'GPS'", date: "Jun 2025", type: "Project", award: null, description: "Implemented shortest path algorithms (Super Source Dijkstra, A*) to calculate optimal routes between locations on a map, focusing on time complexity and performance optimization.", technologies: ["Software Engineering", "C++", "Algorithms"] },
-                    { title: "Operating System project (FOS)", date: "Dec 2024", type: "Project", award: "Full Mark, 6th place", description: "Developed a small educational OS in C, including process management, memory/CPU management, and shared resources (simulated via Bochs), emphasizing modular design.", technologies: ["Software Engineering", "C++"] },
-                    { title: "Forest Fire Detection", date: "Oct 2023", type: "Hackathon", award: "3rd Place, Beyond Earth Hackathon", description: "Integrated AI, IoT, and satellite tech for forest fire combat. Contributed to smoke/fire detection using Logistic Regression and CNN on imagery and developed a CubeSat prototype.", technologies: ["AI/ML", "Python", "IoT", "CNN"] },
-                    { title: "Furniture Inventory Management", date: "Dec 2023", type: "Project", award: null, description: "Designed relational schemas and implemented a database system using SQL Developer and form builders to create user-friendly interfaces for inventory tracking.", technologies: ["Data Engineering", "Oracle SQL"] },
-                    { title: "Planto Website", date: "Sep 2024", type: "Competition", award: "1st Place, Front-End Competition", description: "Won first place in a front-end development competition for the 'Planto' website project, demonstrating proficiency in web technologies.", technologies: ["Software Engineering", "JavaScript"] },
-                    { title: "'SquidGame' Robot", date: "Sep 2023", type: "Competition", award: "2nd Place, IOT Competition", description: "Achieved second place in an IoT competition for designing and building an interactive robot, showcasing skills in hardware and software integration.", technologies: ["Software Engineering", "IoT"] }
+                    {
+                        title: "JobLens — AI-Powered Recruitment Integrity Platform", date: "2025 – 2026", type: "Graduation Project", award: null,
+                        description: "End-to-end AI recruitment platform addressing the 60% irrelevant-application rate and 23-hour average recruiter screening time — LLM-driven ATS scoring, SBERT semantic job matching, an AI proctoring module (MediaPipe + YOLOv8), and a real-time AI interview agent.",
+                        technologies: ["GenAI/RAG", "Computer Vision", "Data Engineering", "AI/ML"]
+                    },
+                    {
+                        title: "AI Customer Support Platform", date: "2025", type: "GenAI Product", award: null,
+                        description: "End-to-end GenAI customer support platform with a real-time LiveKit voice agent, a LangChain + FAISS RAG pipeline with citations, and FastAPI + Docker deployment optimized via INT4/GGUF quantization (~60% memory reduction).",
+                        technologies: ["GenAI/RAG", "AI/ML"]
+                    },
+                    {
+                        title: "AI-Based EEG Signal Classification", date: "2025", type: "AIC Competition · MCIT", award: null,
+                        description: "Designed and trained CNN models to classify Motor Imagery and SSVEP EEG signals for Brain-Computer Interface applications, achieving 70% accuracy on noisy, real-world biosignal data.",
+                        technologies: ["AI/ML", "Computer Vision"]
+                    },
+                    {
+                        title: "Food & Fruit Recognition with Calorie Estimation", date: "2025", type: "Competition", award: "2nd Place, Computer Vision Competition, ASU",
+                        description: "Food analysis pipeline combining CLIP/Siamese few-shot learning and CNN-based segmentation (ResNet, U-Net, DeepLabV3). Reached 99% food-vs-fruit classification, 97% few-shot recognition, and 98% segmentation accuracy.",
+                        technologies: ["Computer Vision", "AI/ML"]
+                    },
+                    {
+                        title: "Guest Satisfaction Prediction", date: "2025", type: "Competition", award: "2nd Place, ML Competition, ASU",
+                        description: "Regression and classification models predicting Airbnb guest satisfaction, combining structured features with NLTK sentiment analysis and SMOTE class balancing. Achieved 80% accuracy.",
+                        technologies: ["AI/ML"]
+                    },
+                    {
+                        title: "Banking Analytics ETL System", date: "2025", type: "Internship", award: null,
+                        description: "ETL pipelines processing banking data across 13 tables (transactions, loans, investments, foreign transfers) via Oracle SQL and Informatica PowerCenter, with Joiner/Aggregator/Lookup mappings and caching for scale.",
+                        technologies: ["Data Engineering"]
+                    },
+                    {
+                        title: "Forest Fire Detection", date: "2023", type: "Hackathon", award: "3rd Place, Beyond Earth Hackathon",
+                        description: "Integrated AI, IoT, and satellite tech for a hackathon project — contributed to smoke/fire detection models and a CubeSat sensor prototype.",
+                        technologies: ["AI/ML"]
+                    },
+                    {
+                        title: "Planto Website", date: "2024", type: "Competition", award: "1st Place, Front-End Competition",
+                        description: "Won first place in a front-end development competition, recognized for Best UI/UX Design and functionality.",
+                        technologies: ["Programming Languages"]
+                    },
+                    {
+                        title: "'SquidGame' Robot", date: "2023", type: "Competition", award: "2nd Place, IoT Competition",
+                        description: "Designed and built an interactive robot for an IoT competition, recognized for hardware-software integration and logic design.",
+                        technologies: ["Programming Languages"]
+                    }
                 ],
                 experience: [
-                    { role: "Machine Learning Instructor", company: "SupportASU", date: "Oct 2024 - Present", description: "Delivering ML sessions, explaining core concepts, and guiding students in applying algorithms on real datasets." },
-                    { role: "Data Engineering Intern", company: "Ejada", date: "Jul 2025 - Aug 2025", description: "Worked with databases, data warehouses, and ETL pipelines, using tools like Informatica for data integration in banking analytics." },
-                    { role: "Artificial Intelligence Intern", company: "Information Technology Institute (ITI)", date: "Jul 2024 - Aug 2024", description: "Trained on Python, NumPy, Pandas, and ML/Deep Learning frameworks. Applied AI models using scikit-learn and TensorFlow." },
-                    { role: "AI Instructor", company: "RoboTech", date: "Oct 2023 - May 2024", description: "Taught fundamentals of AI and ML. Led hands-on projects integrating AI models with IoT devices." }
+                    { role: "Programming Tutor (Part-time)", company: "iSchool · in collaboration with MCIT, Egypt", date: "Jul 2026", description: "Deliver programming and AI courses to school students through project-based, interactive learning — teaching Python, problem-solving, and introductory AI concepts across age groups." },
+                    { role: "Data Engineering Intern", company: "Ejada", date: "Jul 2025 - Aug 2025", description: "Built and optimized ETL pipelines for banking analytics using Oracle SQL and Informatica PowerCenter across 13 relational tables, ensuring data integrity across financial reporting workflows." },
+                    { role: "Machine Learning Instructor", company: "SupportASU", date: "Oct 2024 - Oct 2025", description: "Delivered structured ML sessions on regression, classification, and model evaluation, guiding students in applying algorithms with Python and Scikit-learn on real datasets." },
+                    { role: "Artificial Intelligence Intern", company: "Information Technology Institute (ITI)", date: "Jul 2024 - Aug 2024", description: "Completed intensive training in Machine Learning, Neural Networks, and Deep Learning. Applied supervised and unsupervised models using Scikit-learn and TensorFlow in an Agile, Git-based workflow." },
+                    { role: "AI-Driven IoT Instructor", company: "RoboTech Club, Ain Shams University", date: "Oct 2023 - May 2024", description: "Taught AI and machine learning fundamentals; led hands-on projects integrating AI models with IoT devices." }
                 ],
                 education: [
-                    { degree: "Bachelor's, Computer & Information Science", institution: "Ain Shams University", date: "2022 - 2026", description: "Pursuing a comprehensive curriculum focused on computer science fundamentals, software engineering, and artificial intelligence." }
+                    { degree: "Bachelor of Science, Computer &amp; Information Science", institution: "Ain Shams University", date: "2022 - 2026", description: "CGPA: Very Good. Relevant coursework: OOP, Data Structures &amp; Algorithms, Databases, Operating Systems, Machine Learning, Neural Networks &amp; Deep Learning, Computer Vision, NLP, HCI, Quantum Computing." }
                 ],
                 skills: {
-                    "AI/ML": ["Machine Learning", "Deep Learning", "Neural Networks", "NLP", "CNN", "TensorFlow", "Scikit-learn", "BCI"],
-                    "Data Engineering": ["ETL", "Data Modeling", "Data Pipelines", "Oracle SQL", "Informatica"],
-                    "Programming Languages": ["Python", "C++", "C#", "Java", "JavaScript", "Scala", "SQL"],
-                    "Software Engineering": ["Agile", "SDLC", "Scrum", "OOP", "Testing", "Algorithms", "IoT"],
-                    "Tools": ["Visual Studio", "Git & GitHub"]
+                    "AI/ML": ["Machine Learning", "Deep Learning", "CNNs", "NLP", "Generative AI", "LLMs", "AI Agents", "Scikit-learn", "PyTorch", "TensorFlow"],
+                    "GenAI/RAG": ["LangChain", "RAG", "FastAPI", "ChromaDB", "FAISS", "SBERT Embeddings"],
+                    "Computer Vision": ["YOLOv8", "MediaPipe", "OpenCV", "Signal Processing"],
+                    "Data Engineering": ["ETL Pipelines", "Oracle SQL", "Informatica PowerCenter", "Data Warehousing"],
+                    "Quantum Computing": ["Qiskit", "Pennylane", "Deutsch", "Deutsch-Jozsa", "Simon's", "Grover's", "Shor's"],
+                    "Programming Languages": ["Python (Advanced)", "C++ (Advanced)", "C#", "Java", "JavaScript", "Scala", "SQL"],
+                    "DevOps & Tools": ["Docker", "Git/GitHub", "Google Colab", "Kaggle", "Power BI", "Cloud Computing"]
                 }
             };
 
-            const projectCount = document.getElementById('project-count');
-            const awardCount = document.getElementById('award-count');
-            const experienceYears = document.getElementById('experience-years');
+            // ---------- stats ----------
+            document.getElementById('project-count').textContent = portfolioData.projects.length;
+            document.getElementById('award-count').textContent = portfolioData.projects.filter(p => p.award).length;
+            document.getElementById('experience-years').textContent = "2+";
 
-            const totalProjects = portfolioData.projects.length;
-            const totalAwards = portfolioData.projects.filter(p => p.award).length;
-            projectCount.textContent = totalProjects;
-            awardCount.textContent = totalAwards;
-            experienceYears.textContent = "2+";
-
+            // ---------- radar chart ----------
+            const startColors = chartColorsFor(root.getAttribute('data-theme'));
             const skillsRadarCtx = document.getElementById('skillsRadarChart').getContext('2d');
-            new Chart(skillsRadarCtx, {
+            radarChart = new Chart(skillsRadarCtx, {
                 type: 'radar',
                 data: {
-                    labels: ['AI/ML', 'Data Engineering', 'Software Engineering', 'Problem Solving', 'Programming'],
+                    labels: ['AI/ML', 'Data Engineering', 'Quantum Computing', 'Software Engineering', 'Programming'],
                     datasets: [{
                         label: 'Competency Level',
-                        data: [9, 8, 7, 9, 8],
-                        backgroundColor: 'rgba(101, 119, 134, 0.2)',
-                        borderColor: 'rgba(101, 119, 134, 1)',
-                        pointBackgroundColor: 'rgba(101, 119, 134, 1)',
+                        data: [9, 8, 6, 7, 9],
+                        backgroundColor: startColors.fill,
+                        borderColor: startColors.border,
+                        pointBackgroundColor: startColors.border,
                         pointBorderColor: '#fff',
                         pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgba(101, 119, 134, 1)'
+                        pointHoverBorderColor: startColors.border
                     }]
                 },
                 options: {
@@ -288,9 +336,9 @@
                     elements: { line: { borderWidth: 2 } },
                     scales: {
                         r: {
-                            angleLines: { color: '#E1E8ED' },
-                            grid: { color: '#E1E8ED' },
-                            pointLabels: { font: { size: 12 }, color: '#657786' },
+                            angleLines: { color: startColors.grid },
+                            grid: { color: startColors.grid },
+                            pointLabels: { font: { size: 12 }, color: startColors.point },
                             ticks: { display: false, beginAtZero: true, max: 10 }
                         }
                     },
@@ -301,15 +349,17 @@
                                 title: function (tooltipItems) {
                                     const item = tooltipItems[0];
                                     let label = item.chart.data.labels[item.dataIndex];
-                                    if (Array.isArray(label)) { return label.join(' '); }
-                                    return label;
+                                    return Array.isArray(label) ? label.join(' ') : label;
                                 }
                             }
                         }
                     }
                 }
             });
+            // re-apply theme now that chart exists, to sync colors precisely
+            applyTheme(root.getAttribute('data-theme'));
 
+            // ---------- skills deep dive ----------
             const skillButtonsContainer = document.getElementById('skill-buttons');
             const skillCategoryTitle = document.getElementById('skill-category-title');
             const skillList = document.getElementById('skill-list');
@@ -340,27 +390,29 @@
                 skillList.innerHTML = '';
                 portfolioData.skills[category].forEach(skill => {
                     const li = document.createElement('li');
-                    li.className = "flex items-center text-gray-600";
-                    li.innerHTML = `
-                <span class="w-2 h-2 bg-gray-400 rounded-full mr-3"></span>
-                ${skill}`;
+                    li.className = "flex items-center";
+                    li.style.color = "var(--text)";
+                    li.innerHTML = `<span class="w-2 h-2 rounded-full mr-3" style="background-color:var(--muted);"></span>${skill}`;
                     skillList.appendChild(li);
                 });
 
                 relatedProjects.innerHTML = '';
-                const relevantProjects = portfolioData.projects.filter(p => p.technologies.includes(category) || (category === "Programming Languages" && p.technologies.some(t => ["Python", "C++", "Java", "JavaScript", "SQL"].includes(t))));
+                const relevantProjects = portfolioData.projects.filter(p => p.technologies.includes(category));
                 if (relevantProjects.length > 0) {
                     relevantProjects.forEach(p => {
                         const projectDiv = document.createElement('div');
-                        projectDiv.className = "p-3 bg-gray-50 rounded-lg border border-gray-200";
-                        projectDiv.innerHTML = `<h4 class="font-semibold text-gray-800">${p.title}</h4>`;
+                        projectDiv.className = "p-3 rounded-lg border";
+                        projectDiv.style.backgroundColor = "var(--bg)";
+                        projectDiv.style.borderColor = "var(--border)";
+                        projectDiv.innerHTML = `<h4 class="font-semibold" style="color:var(--heading);">${p.title}</h4>`;
                         relatedProjects.appendChild(projectDiv);
                     });
                 } else {
-                    relatedProjects.innerHTML = `<p class="text-gray-500">No specific projects listed for this category. These skills are applied across my work.</p>`;
+                    relatedProjects.innerHTML = `<p style="color:var(--muted);">No specific projects listed for this category. These skills are applied across my work.</p>`;
                 }
             }
 
+            // ---------- projects ----------
             const projectFiltersContainer = document.getElementById('project-filters');
             const projectGrid = document.getElementById('project-grid');
             const allTechs = new Set(portfolioData.projects.flatMap(p => p.technologies));
@@ -389,10 +441,10 @@
                     card.className = 'card p-6 rounded-xl shadow-sm flex flex-col';
                     card.innerHTML = `
                 <div class="flex-grow">
-                     ${project.award ? `<p class="text-sm font-semibold text-amber-600 mb-1">🏆 ${project.award}</p>` : ''}
-                    <h3 class="text-lg font-bold text-gray-800">${project.title}</h3>
-                    <p class="text-sm text-gray-500 mt-1 mb-3">${project.date}</p>
-                    <p class="text-gray-600 text-sm mb-4">${project.description}</p>
+                     ${project.award ? `<p class="text-sm font-semibold mb-1 project-card-award">🏆 ${project.award}</p>` : `<p class="text-sm font-semibold mb-1" style="color:var(--muted);">${project.type}</p>`}
+                    <h3 class="text-lg font-bold" style="color:var(--heading);">${project.title}</h3>
+                    <p class="text-sm mt-1 mb-3" style="color:var(--muted);">${project.date}</p>
+                    <p class="text-sm mb-4" style="color:var(--text);">${project.description}</p>
                 </div>
                 <div class="flex flex-wrap gap-2 mt-auto">
                     ${project.technologies.map(t => `<span class="project-tag text-xs font-medium px-2 py-1 rounded-md">${t}</span>`).join('')}
@@ -412,6 +464,7 @@
 
             renderProjects();
 
+            // ---------- timeline ----------
             const timelineContainer = document.getElementById('career-timeline-container');
             const timelineEvents = [...portfolioData.education, ...portfolioData.experience].sort((a, b) => new Date('01 ' + b.date.split(' - ')[0]) - new Date('01 ' + a.date.split(' - ')[0]));
 
@@ -420,16 +473,17 @@
                 item.className = 'timeline-item relative';
                 item.innerHTML = `
             <div class="p-4 card rounded-xl shadow-sm">
-                <p class="text-xs text-gray-500 font-semibold uppercase">${event.degree ? 'EDUCATION' : 'EXPERIENCE'}</p>
-                <h3 class="text-lg font-bold text-gray-800 mt-1">${event.role || event.degree}</h3>
-                <p class="text-md font-semibold text-gray-600">${event.company || event.institution}</p>
-                <p class="text-sm text-gray-400 my-2">${event.date}</p>
-                <p class="text-sm text-gray-600">${event.description}</p>
+                <p class="text-xs font-semibold uppercase" style="color:var(--muted);">${event.degree ? 'EDUCATION' : 'EXPERIENCE'}</p>
+                <h3 class="text-lg font-bold mt-1" style="color:var(--heading);">${event.role || event.degree}</h3>
+                <p class="text-md font-semibold" style="color:var(--text);">${event.company || event.institution}</p>
+                <p class="text-sm my-2" style="color:var(--muted);">${event.date}</p>
+                <p class="text-sm" style="color:var(--text);">${event.description}</p>
             </div>
         `;
                 timelineContainer.appendChild(item);
             });
 
+            // ---------- scrollspy ----------
             const navLinks = document.querySelectorAll('.nav-link');
             const sections = document.querySelectorAll('main section');
             window.addEventListener('scroll', () => {
@@ -449,11 +503,16 @@
                 });
             });
 
+            // ---------- reveal-on-scroll ----------
+            document.querySelectorAll('#overview, #skills, #projects, #timeline').forEach(s => s.classList.add('fade-in'));
+            const revealObserver = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+            }, { threshold: 0.08 });
+            document.querySelectorAll('.fade-in').forEach(el => revealObserver.observe(el));
+
         });
     </script>
 
 </body>
 
-
 </html>
-
